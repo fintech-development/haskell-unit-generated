@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sandboxInterchangeEnrichment.json",
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "account" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "customer": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["individualCustomer", "businessCustomer", "customer" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "transaction": {
+      "title": "Transaction",
+      "oneOf": [
+        { "$ref": "transaction.json#/definitions/cardTransaction" },
+        { "$ref": "transaction.json#/definitions/atm" },
+        { "$ref": "transaction.json#/definitions/purchase" }
+      ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Sandbox Interchange Enrichment Resource",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/transaction" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "updateAccount.json",
+  "definitions": {
+    "updateDepositAccount": {
+      "title": "Update Deposit Account",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "depositAccount"
+        },
+        "attributes": {
+          "anyOf": [
+          {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "$ref": "tags.json#/definitions/tagsPatch"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "depositProduct": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "overdraftLimit": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          ]
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "updateCreditAccount": {
+      "title": "Update Credit Account",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "creditAccount"
+        },
+        "attributes": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "$ref": "tags.json#/definitions/tagsPatch"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes"
+      ]
+    }
+  },
+  "title": "Update Account",
+  "type": "object",
+  "properties": {
+    "data": {
+      "oneOf": [{ "$ref": "#/definitions/updateDepositAccount" }, { "$ref": "#/definitions/updateCreditAccount" }]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

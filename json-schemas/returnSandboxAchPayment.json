@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "returnSandboxAchPayment.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "payment": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "achPayment" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "payment" ],
+      "additionalProperties": false
+    },
+    "returnAchPayment": {
+      "title": "Return ACH Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "returnAchPayment" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+          },
+          "required": [ ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+  "title": "Return ACH Payment",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/returnAchPayment" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

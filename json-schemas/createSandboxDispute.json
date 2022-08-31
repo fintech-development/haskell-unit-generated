@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createSandboxDispute.json",
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "account"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "transaction": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "transaction"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "account",
+        "transaction"
+      ],
+      "additionalProperties": false
+    },
+    "createDispute": {
+      "title": "Create Sandbox Dispute",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "dispute"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "relationships": {
+          "$ref": "#/definitions/relationships"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes",
+        "relationships"
+      ]
+    }
+  },
+  "title": "Create Dispute",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/createDispute"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

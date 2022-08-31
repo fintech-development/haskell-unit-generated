@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "payment.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["depositAccount", "account" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "counterparty": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "counterparty" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "counterpartyAccount": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["depositAccount", "account" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "transaction": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "transaction" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "achPayment": {
+      "title": "ACH Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "achPayment" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer", "minimum": 1},
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "description": { "type": "string", "minLength": 1, "maxLength": 50 },
+            "addenda": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "counterparty": { "$ref": "#/definitions/counterparty" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "status": { "type": "string", "enum": ["Pending", "Rejected", "Clearing", "Sent", "Canceled", "Returned" ] },
+            "settlementDate": { "type": "string", "format": "date" },
+            "reason": { "type": [ "string", "null" ] },
+            "expectedCompletionDate": { "type": "string", "format": "date" }
+          },
+          "required": [ "createdAt", "status", "description", "amount", "direction" ],
+          "additionalProperties": true
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "bookPayment": {
+      "title": "Book Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "bookPayment" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer", "minimum": 1},
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "description": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "status": { "type": "string", "enum": ["Pending", "Rejected", "Clearing", "Sent", "Canceled", "Returned" ] },
+            "settlementDate": { "type": "string", "format": "date" },
+            "reason": { "type": [ "string", "null" ] }
+          },
+          "required": [ "createdAt", "amount", "direction", "description", "status" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "wirePayment": {
+      "title": "Wire Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "wirePayment" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer", "minimum": 1},
+            "direction": { "type": "string", "enum": ["Credit"] },
+            "description": { "type": "string", "minLength": 1, "maxLength": 50 },
+            "counterparty": {"$ref": "payment.json#/definitions/wireCounterparty"},
+            "status": { "type": "string", "enum": ["Pending", "Rejected", "Clearing", "Sent", "Canceled", "Returned" ] },
+            "settlementDate": { "type": "string", "format": "date" },
+            "reason": { "type": [ "string", "null" ] },
+            "imadOmad": {
+              "type": "object",
+              "properties": {
+                "imad": { "type": "string" },
+                "omad": { "type": "string" }
+              }
+            }
+          },
+          "required": [ "createdAt", "amount", "direction", "description", "status" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "billPayment": {
+      "title": "Bill Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "billPayment" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer", "minimum": 1},
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "description": { "type": "string", "minLength": 1, "maxLength": 50 },
+            "status": { "type": "string", "enum": ["Initialized", "Pending", "Rejected", "Clearing", "Sent", "Canceled", "Returned" ] },
+            "reason": { "type": [ "string", "null" ] }
+          },
+          "required": [ "createdAt", "amount", "direction", "description", "status" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "payment": {
+      "title": "Payment Resource",
+      "oneOf": [
+        { "$ref": "#/definitions/achPayment" },
+        { "$ref": "#/definitions/bookPayment" },
+        { "$ref": "#/definitions/wirePayment" },
+        { "$ref": "#/definitions/billPayment" }
+      ]
+    },
+    "counterparty": {
+      "title": "Counterparty",
+      "type": "object",
+      "properties": {
+        "routingNumber": { "type": "string", "pattern": "^\\d{9}$" },
+        "accountNumber": { "type": "string", "pattern": "^\\d{1,17}$" },
+        "accountType": { "type": "string", "enum": [ "Checking", "Savings" ] },
+        "name": { "type": "string", "minLength": 1, "maxLength": 50 }
+      },
+      "additionalProperties": false,
+      "required": [ "routingNumber", "accountNumber", "accountType", "name" ]
+    },
+    "wireCounterparty": {
+      "title": "WireCounterparty",
+      "type": "object",
+      "properties": {
+        "routingNumber": { "type": "string", "pattern": "^\\d{9}$" },
+        "accountNumber": { "type": "string", "maxLength": 17 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "address": { "$ref": "types.json#/definitions/address" }
+      },
+      "additionalProperties": false,
+      "required": [ "routingNumber", "accountNumber", "address", "name" ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Payment Resource",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/payment" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

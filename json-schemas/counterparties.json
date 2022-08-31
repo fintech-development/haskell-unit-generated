@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "counterparties.json",
+  "title": "Counterparties Document",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "counterparty.json#/definitions/counterparty"
+      }
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

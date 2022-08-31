@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createFee.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "account", "depositAccount" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "account" ],
+      "additionalProperties": false
+    },
+    "fee": {
+      "title": "Fee",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "fee" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": "integer", "minimum": 1 },
+            "description": { "type": "string", "maxLength": 50 },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "idempotencyKey": { "type": "string", "minLength": 1, "maxLength": 255 }
+          },
+          "required": [ "amount", "description" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "required": [ "type", "attributes", "relationships" ],
+      "additionalProperties": false
+    }
+  },
+
+  "title": "Create Fee",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/fee" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createSandboxPurchase.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "depositAccount", "creditAccount" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "authorization": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "authorization"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "account" ],
+      "additionalProperties": false
+    },
+    "purchase": {
+      "title": "Create Simulated Purchase",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "purchaseTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "merchantName": { "type": "string" },
+            "merchantType": { "type": "integer" },
+            "merchantLocation": { "type": "string" },
+            "merchantId": { "type": "string" },
+            "coordinates": { "$ref": "types.json#/definitions/coordinates" },
+            "last4Digits": {"type": "string", "pattern": "^\\d{4}$" },
+            "recurring": { "type": "boolean" },
+            "internationalServiceFee": { "type": "integer"}
+
+          },
+          "required": [ "amount", "direction", "merchantName", "merchantType", "last4Digits" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Create Simulated Purchase",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/purchase" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

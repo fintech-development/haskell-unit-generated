@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createAccount.json",
+
+  "definitions": {
+    "createDepositAccount": {
+      "title": "Create Deposit Account",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "depositAccount" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "depositProduct": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "idempotencyKey": { "type": "string", "minLength": 1, "maxLength": 255 },
+            "overdraftLimit": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [ "depositProduct" ]
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "customer": { "$ref": "customer.json#/definitions/customerLinkage" }
+          },
+          "required": [ "customer" ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "relationships", "attributes" ]
+    },
+    "createCreditAccount": {
+      "title": "Create Credit Account",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "creditAccount" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "creditTerms": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "idempotencyKey": { "type": "string", "minLength": 1, "maxLength": 255 },
+            "creditLimit": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false,
+          "required": [ "creditTerms", "creditLimit" ]
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "customer": { "$ref": "customer.json#/definitions/customerLinkage" }
+          },
+          "required": [ "customer" ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "relationships", "attributes" ]
+    },
+    "createJointDepositAccount": {
+      "title": "Create Joint Deposit Account",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "depositAccount" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "depositProduct": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "idempotencyKey": { "type": "string", "minLength": 1, "maxLength": 255 },
+            "overdraftLimit": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [ "depositProduct" ]
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "customers": {
+              "type": "object",
+              "items": { "$ref": "customer.json#/definitions/customerLinkage" }
+            }
+          },
+          "required": [ "customers" ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "relationships", "attributes" ]
+    },
+    "createBatchAccount": {
+      "title": "Create Batch Account",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "batchAccount" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "depositProduct": { "type": "string" },
+            "name": {"type": "string", "maxLength": 255, "minLength": 1 },
+            "idempotencyKey": { "type": "string", "minLength": 1, "maxLength": 255 }
+          },
+          "additionalProperties": false,
+          "required": [ "depositProduct", "name" ]
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "org": { "$ref": "types.json#/definitions/orgRelationship" }
+          },
+          "required": [ "org" ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "relationships", "attributes" ]
+    }
+  },
+
+  "title": "Create Account",
+  "type": "object",
+  "properties": {
+    "data": {
+      "oneOf": [
+        { "$ref": "#/definitions/createDepositAccount" }, { "$ref": "#/definitions/createJointDepositAccount" }, { "$ref": "#/definitions/createBatchAccount" }, { "$ref": "#/definitions/createCreditAccount" }
+      ]
+    }
+  },
+  "required": [ "data" ]
+}

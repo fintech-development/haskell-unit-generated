@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "transactions.json",
+  "title": "Transactions Document",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "transaction.json#/definitions/transaction" }
+    }
+  },
+  "required": [ "data" ]
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "transmitSandboxWirePayment.json",
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "payment": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "wirePayment"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "payment"
+      ],
+      "additionalProperties": false
+    },
+    "transmitWirePayment": {
+      "title": "Transmit Wire Payment",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "transmitWirePayment"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "relationships": {
+          "$ref": "#/definitions/relationships"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+  "title": "Transmit Wire Payment",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/transmitWirePayment"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

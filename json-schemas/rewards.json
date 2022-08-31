@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "rewards.json",
+  "title": "Rewards Resource",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "reward.json#/definitions/reward" }
+    }
+  },
+  "required": [ "data" ]
+}

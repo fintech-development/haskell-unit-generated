@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sandboxPurchase.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "depositAccount", "creditAccount", "account" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "customer": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["individualCustomer", "businessCustomer", "customer" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "authorization": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "authorization"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "card": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "card"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "purchase": {
+      "title": "Sandbox Purchase",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "purchaseTransaction" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "balance": { "type": "integer" },
+            "merchantName": { "type": "string" },
+            "merchantType": { "type": "integer" },
+            "merchantLocation": { "type": "string" },
+            "coordinates": { "$ref": "types.json#/definitions/coordinates" },
+            "last4Digits": {"type": "string", "pattern": "^\\d{4}$" },
+            "recurring": { "type": "boolean" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "internationalServiceFee": { "type": "integer"}
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "merchantName", "merchantType", "recurring" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Sandbox Purchase Resource",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/purchase" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

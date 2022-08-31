@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "documents.json",
+  "title": "Application Documents Document",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "document.json#/definitions/document" }
+    },
+    "included": {
+      "type": "array"
+    }
+  },
+  "required": [ "data" ]
+}

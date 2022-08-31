@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "declinedIncomingPayments.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "account": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["depositAccount", "account" ] },
+                  "id": { "$ref": "types.json#/definitions/identifier" }
+                },
+                "required": [ "type", "id" ],
+                "additionalProperties": false
+              }
+            },
+            "required": [ "data" ],
+            "additionalProperties": false
+          },
+          "customer": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "enum": ["businessCustomer", "individualCustomer", "customer"] },
+                  "id": { "$ref": "types.json#/definitions/identifier" }
+                },
+                "required": [ "type", "id" ],
+                "additionalProperties": false
+              }
+            },
+            "required": [ "data" ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "declinedIncomingPayment": {
+      "title": "Declined Incoming Payment",
+      "type": "object",
+      "properties": {
+        "type": {"type": "string", "const": "declinedIncomingPayment"},
+        "id": {"$ref": "types.json#/definitions/identifier"},
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": ["integer", "null"] },
+            "direction": { "oneOf": [{ "type": "string", "enum": ["Credit", "Debit"] }, { "type": "null" }] },
+            "reason": { "type": "string", "minLength": 1, "maxLength": 255 },
+            "paymentType": { "type": "string", "enum": [ "AchPayment" ]},
+            "createdAt": { "type": "string", "format": "date-time" }
+          },
+          "additionalProperties": false,
+          "required": [ "paymentType", "createdAt", "reason" ]
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      }
+    }
+  },
+
+  "title": "DeclinedIncomingPayments Resource",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/declinedIncomingPayment" }
+    }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

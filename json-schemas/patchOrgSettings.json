@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "patchOrgSettings.json",
+  "definitions": {
+    "generalSettings": {
+      "title": "General Settings",
+      "type": "object",
+      "properties": {
+        "preventDuplicateIndividualApplications": {
+          "type": "boolean"
+        },
+        "showSensitiveDataForPhysicalCards": {
+          "type": "boolean"
+        },
+        "enableTagInheritanceForCards": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "preventDuplicateIndividualApplications"
+      ]
+    },
+    "samlSettings": {
+      "title": "SAML Settings",
+      "type": "object",
+      "properties": {
+        "orgWorkspace": {
+          "type": "string"
+        },
+        "entryPoint": {
+          "type": "string"
+        },
+        "cert": {
+          "type": "string"
+        },
+        "signatureAlgorithm": {
+          "type": "string"
+        },
+        "enforceSSOLogin": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "orgWorkspace",
+        "entryPoint",
+        "cert",
+        "signatureAlgorithm",
+        "enforceSSOLogin"
+      ]
+    },
+    "jwtSettings": {
+      "type": "object",
+      "properties": {
+        "provider": { "enum": ["Auth0", "Cognito", "Stytch"] },
+        "jwksPath": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["provider", "jwksPath"]
+    },
+    "dashboardSettings": {
+      "title": "Dashboard Access Settings",
+      "type": "object",
+      "properties": {
+        "whitelistSourceIps": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "statementsSettings": {
+      "title": "Statements Settings",
+      "type": "object",
+      "properties": {
+        "statementFont": {
+          "type": "string",
+          "pattern": "([^)]+?.(woff|eot|woff2|ttf|svg)[^\"]*)"
+        },
+        "statementLogo": {
+          "type": "string"
+        },
+        "statementHeaderBackground": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-f]{6,8}$"
+        },
+        "statementHeaderColor": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-f]{6,8}$"
+        },
+        "statementPhone": {
+          "type": "string",
+          "pattern": "^[0-9]{10}$"
+        },
+        "statementEmail": {
+          "type": "string",
+          "format": "email"
+        },
+        "statementRepresentativeName": {
+          "type": "string",
+          "maxLength": 50
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "statementPhone",
+        "statementEmail"
+      ]
+    },
+    "patchOrgSettings": {
+      "title": "Patch Org Settings",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "orgSettings"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "generalSettings": {
+              "oneOf": [
+                {
+                  "ref": "#/definitions/generalSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "samlSettings": {
+              "oneOf": [
+                {
+                  "ref": "#/definitions/samlSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jwtSettings": {
+              "oneOf": [
+                {
+                  "ref": "#/definitions/jwtSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "dashboardSettings": {
+              "oneOf": [
+                {
+                  "ref": "#/definitions/dashboardSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "statementsSettings": {
+              "oneOf": [
+                {
+                  "ref": "#/definitions/statementsSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "applicationFormSettings": {
+              "oneOf": [
+                {
+                  "ref": "orgSettings.json#/definitions/applicationFormSettings"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes"
+      ]
+    }
+  },
+  "title": "Patch Org Settings",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/patchOrgSettings"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

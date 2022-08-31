@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "returnAchTransaction.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["depositAccount", "account", "batchAccount"] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "returnAch": {
+      "title": "Return ACH Transaction",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "returnAch" },
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "enum": [
+                "InsufficientFunds",
+                "ReturnedPerOdfiRequest",
+                "UncollectedFunds",
+                "ConsumerPaymentUnauthorized",
+                "CustomerAdvisesNotWithTerms",
+                "CorporatePaymentUnauthorized",
+                "CreditEntryRefusedByReceiver",
+                "AccountFrozen",
+                "FileRecordEditCriteria"
+              ]
+            }
+          },
+          "required": [ "reason" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "attributes", "relationships" ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Return ACH Transaction",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/returnAch" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "enableCardToCardPaymentRequest.json",
+  "definitions": {
+    "enableAstraCardToCardPayment": {
+      "title": "Enable Astra card to card payment",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "astra"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "idempotencyKey": {
+              "type": "string"
+            }
+          },
+          "required" : ["token"],
+          "additionalProperties": false
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": ["attributes"]
+    },
+    "enableTabapayCardToCardPayment": {
+      "title": "Enable Tabapay",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "tabapay"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "clientId": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "idempotencyKey": {
+              "type": "string"
+            }
+          },
+          "required" : ["clientId","token"],
+          "additionalProperties": false
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": ["attributes"]
+    },
+    "cardToCardPaymentRequest" : {
+      "oneOf": [
+        { "$ref": "#/definitions/enableAstraCardToCardPayment" },
+        { "$ref": "#/definitions/enableTabapayCardToCardPayment" }
+      ]
+    }
+  },
+  "title": "Enable Card To Card Payment",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/cardToCardPaymentRequest"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

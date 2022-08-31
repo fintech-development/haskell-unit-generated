@@ -1,0 +1,98 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.7.
+--
+-- see: https://github.com/sol/hpack
+
+name:           haskell-unit-generated
+version:        0.1.0.0
+description:    https://github.com/an-death/haskell-unit-generated
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+library
+  exposed-modules:
+      TheUnit
+      TheUnit.Model
+      TheUnit.Model.Common
+      TheUnit.Model.Contact
+      TheUnit.Model.Core
+      TheUnit.Model.Response
+  other-modules:
+      Paths_haskell_unit_generated
+  hs-source-dirs:
+      lib
+  default-extensions:
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      OverloadedLabels
+      OverloadedStrings
+      FlexibleContexts
+      FlexibleInstances
+      StandaloneDeriving
+      ScopedTypeVariables
+      ExplicitForAll
+      TypeOperators
+      TypeApplications
+      DeriveGeneric
+      MonoLocalBinds
+      DerivingStrategies
+      BlockArguments
+      PostfixOperators
+      TupleSections
+      LambdaCase
+      NumericUnderscores
+      MultiWayIf
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DerivingVia
+      EmptyDataDecls
+      ExistentialQuantification
+      FunctionalDependencies
+      GADTs
+      KindSignatures
+      MultiParamTypeClasses
+      NumDecimals
+      PatternSynonyms
+      RankNTypes
+      TypeFamilies
+      ViewPatterns
+      PartialTypeSignatures
+  ghc-options: -Wall -Wcompat -Werror=missing-fields -Werror=incomplete-record-updates -Werror=missing-methods -Werror=incomplete-patterns -Wincomplete-uni-patterns -Wpartial-fields -Widentities -Wredundant-constraints -funbox-strict-fields
+  build-depends:
+      aeson >=1.0 && <2.0
+    , base >=4.7 && <5
+    , base64-bytestring >1.0 && <2.0
+    , bytestring >=0.10.0 && <0.11
+    , case-insensitive
+    , containers >=0.5.0.0 && <0.8
+    , deepseq >=1.4 && <1.6
+    , exceptions >=0.4
+    , haskell-client-generated
+    , http-api-data >=0.3.4 && <0.5
+    , http-client >=0.5 && <0.7
+    , http-client-tls
+    , http-media >=0.4 && <0.9
+    , http-types >=0.8 && <0.13
+    , iso8601-time
+    , microlens >=0.4.3 && <0.5
+    , mtl >=2.2.1
+    , network >=2.6.2 && <3.9
+    , openapi3
+    , random >=1.1
+    , safe-exceptions <0.2
+    , text >=0.11 && <1.3
+    , time >=1.5
+    , transformers >=0.4.0.0
+    , unordered-containers
+    , vector >=0.10.9 && <0.13
+  default-language: Haskell2010

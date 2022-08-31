@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createSandboxReceivedPayment.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "depositAccount" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "account" ],
+      "additionalProperties": false
+    },
+    "achReceivedPayment": {
+      "title": "Create Simulated Ach Received Payment",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "achReceivedPayment" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": "integer"},
+            "description": { "type": "string", "maxLength": 50 },
+            "companyName": { "type": "string", "maxLength": 50 },
+            "completionDate": { "type": "string", "format": "date" },
+            "secCode": { "type": "string", "minLength": 3, "maxLength": 3 }
+          },
+          "required": [ "amount", "description", "completionDate",  "companyName"],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Create Simulated Received Payment",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/achReceivedPayment" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

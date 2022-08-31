@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createSandboxAtmAuthorizationRequest.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "card": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "card" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "card" ],
+      "additionalProperties": false
+    },
+    "atmAuthorizationRequest": {
+      "title": "Create Simulated Atm Authorization request",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "const": "atmAuthorizationRequest" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "amount": { "type": "integer" },
+            "atmName": { "type": "string" },
+            "atmLocation": { "type": "string" }
+          },
+          "required": [ "amount", "atmName" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "additionalProperties": false
+  },
+
+  "title": "Create Simulated Atm Authorization Request",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/atmAuthorizationRequest" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}

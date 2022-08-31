@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "applicationForms.json",
+  "title": "Application Forms Document",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "applicationForm.json#/definitions/applicationForm" }
+    }
+  },
+  "required": [ "data" ]
+}

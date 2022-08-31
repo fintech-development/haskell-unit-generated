@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "freezeAccount.json",
+  "definitions": {
+    "freezeDepositAccount": {
+      "title": "Freeze Deposit Account",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "accountFreeze"
+        },
+        "attributes": {
+          "oneOf": [
+            {
+              "type": "object",
+              "title": "freezeAccountFraud",
+              "properties": {
+                "reason": {"type": "string", "const": "Fraud" }
+              }
+            },
+            {
+              "type": "object",
+              "title": "freezeAccountOther",
+              "properties": {
+                "reason": { "type": "string", "const": "Other" },
+                "reasonText": { "type": "string", "minLength": 1, "maxLength": 255 }
+              }
+            }
+          ]
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": ["type", "attributes"]
+    },
+    "freezeCreditAccount": {
+      "title": "Freeze Credit Account",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "creditAccountFreeze"
+        },
+        "attributes": {
+          "oneOf": [
+            {
+              "type": "object",
+              "title": "freezeAccountFraud",
+              "properties": {
+                "reason": {"type": "string", "const": "Fraud" }
+              }
+            },
+            {
+              "type": "object",
+              "title": "freezeAccountOther",
+              "properties": {
+                "reason": { "type": "string", "const": "Other" },
+                "reasonText": { "type": "string", "minLength": 1, "maxLength": 255 }
+              }
+            }
+          ]
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": ["type", "attributes"]
+    }
+  },
+  "title": "Freeze Account",
+  "type": "object",
+  "properties": {
+    "data": {
+      "oneOf": [{ "$ref": "#/definitions/freezeDepositAccount" }, { "$ref": "#/definitions/freezeCreditAccount" }]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["data"]
+}

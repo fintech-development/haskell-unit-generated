@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "chargeback.json",
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "businessCustomer", "individualCustomer", "customer" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "account", "depositAccount", "batchAccount" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "counterpartyAccount": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": [ "account", "depositAccount", "batchAccount" ] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "transaction": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "transaction" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "customer",
+        "account",
+        "transaction",
+        "counterpartyAccount"
+      ],
+      "additionalProperties": false
+    },
+    "chargeback": {
+      "title": "Chargeback",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "chargeback"
+        },
+        "id": {
+          "$ref": "types.json#/definitions/identifier"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string", "maxLength": 50 },
+            "amount": { "type": "integer", "minimum": 1 },
+            "createdAt": { "type": "string", "format": "date-time" },
+            "tags": {
+              "$ref": "tags.json#/definitions/tags"
+            }
+          },
+          "required": [
+            "description",
+            "createdAt",
+            "amount",
+            "tags"
+          ],
+          "additionalProperties": false
+        },
+        "relationships": {
+          "$ref": "#/definitions/relationships"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "relationships",
+        "attributes"
+      ]
+    }
+  },
+  "title": "Chargeback Resource",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/chargeback"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

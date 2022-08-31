@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "enabledCardToCardPayment.json",
+  "definitions": {
+    "enabledAstraCardToCardPayment": {
+      "title": "Enabled Astra Card To Card Payment",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "astra"
+        },
+        "id": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "astraCardId": {
+              "type": "string"
+            }
+          },
+          "required" : ["astraCardId"],
+          "additionalProperties": false
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": ["attributes", "id", "type"]
+    },
+    "enabledTabapayCardToCardPayment" : {
+      "title": "Enabled Tabapay Card To Card Payment",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "tabapay"
+        },
+        "id": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "tabapayAccountId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "tabapayAccountId"
+          ],
+          "additionalProperties": false
+        },
+        "additionalProperties": false
+      },
+      "additionalProperties": false,
+      "required": [
+        "attributes",
+        "id",
+        "type"
+      ]
+    },
+    "enabledCardToCardPayment" : {
+      "oneOf": [
+        { "$ref": "#/definitions/enabledAstraCardToCardPayment" },
+        { "$ref": "#/definitions/enabledTabapayCardToCardPayment" }
+      ]
+    }
+  },
+  "title": "Enabled Astra",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/enabledCardToCardPayment"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

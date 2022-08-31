@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "applicationFormUi.json",
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "org": { "$ref": "types.json#/definitions/orgRelationship" }
+      },
+      "required": [
+
+      ],
+      "additionalProperties": false
+    },
+    "applicationFormUi": {
+      "title": "Application Form UI",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "applicationFormUi"
+        },
+        "id": {
+          "$ref": "types.json#/definitions/identifier"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "email": { "$ref": "types.json#/definitions/email" },
+            "stage": {
+              "type": "string"
+            },
+            "orgName": {
+              "type": "string"
+            },
+            "tags": {
+              "$ref": "tags.json#/definitions/tags"
+            },
+            "applicationFormSettings": {
+              "$ref": "orgSettings.json#/definitions/applicationFormSettings"
+            },
+            "applicantDetails": {
+              "$ref": "createApplicationForm.json#/definitions/prefilled"
+            },
+            "settingsOverride": {
+              "$ref": "createApplicationForm.json#/definitions/settingsOverride"
+            },
+            "bankName": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string", "enum": [
+                "Entering" ,"AwaitingDocuments", "PendingReview", "Approved", "Denied", "Pending", "Canceled"
+              ]
+            },
+            "state": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "applicationFormDocuments": {
+              "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "$ref": "types.json#/definitions/identifier" },
+                    "documentType": { "type": "string" },
+                    "status": { "type": "string" },
+                    "nationality": { "$ref": "types.json#/definitions/country" },
+                    "ssn": { "type": "string", "pattern": "^\\d{9}$" },
+                    "passport": { "type": "string" },
+                    "name": { "type": "string" },
+                    "address": { "$ref": "types.json#/definitions/address" },
+                    "dateOfIncorporation": { "type": "string", "format": "date" },
+                    "dateOfBirth": { "type": "string", "format": "date" },
+                    "ein": { "type": "string", "pattern": "^\\d{9}$" }
+                  }
+                }
+              },
+              {"type": "null"}
+            ]},
+            "allowedApplicationTypes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [ "Individual", "Business", "SoleProprietorship" ]
+              }
+            },
+            "lang": {
+              "type": "string",
+              "enum": [ "en", "es" ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "relationships": {
+          "$ref": "#/definitions/relationships"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ]
+    }
+  },
+  "title": "Application Form UI Document",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/definitions/applicationFormUi"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ]
+}

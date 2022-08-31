@@ -1,0 +1,1296 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "transaction.json",
+
+  "definitions": {
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["depositAccount", "glAccount", "account"] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "customer": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["businessCustomer", "individualCustomer", "customer"] },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "customers": {
+          "$ref": "types.json#/definitions/customersRelationship"
+        },
+        "counterpartyAccount": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "account" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "counterpartyCustomer": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "customer" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "relatedTransaction": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "transaction" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "disputedTransaction": {
+          "$ref": "#/definitions/relationships/properties/relatedTransaction"
+        },
+        "authorization": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "authorization" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "returned": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "transaction" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "payment": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "payment" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "recurringPayment": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "const": "recurringPayment" },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "org": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "org"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "card": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "card"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "incomingAch": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "incomingAch"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "checkDeposit": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "checkDeposit"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "authorizationRequest": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "authorizationRequest"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "paymentAdvanceTransaction": {
+          "$ref": "#/definitions/relationships/properties/relatedTransaction"
+        },
+        "receivedPayment": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "receivedPayment"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "chargeback": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "chargeback"
+                },
+                "id": { "$ref": "types.json#/definitions/identifier" }
+              },
+              "required": [ "type", "id" ],
+              "additionalProperties": false
+            }
+          },
+          "required": [ "data" ],
+          "additionalProperties": false
+        },
+        "reward" : {
+          "type": "object",
+          "properties": {
+            "data" : {
+              "type": "object",
+              "properties" : {
+                "type": {
+                  "type": "string",
+                  "const": "reward"
+                },
+                "id": {
+                  "$ref": "types.json#/definitions/identifier"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "account" ],
+      "additionalProperties": false
+    },
+    "originatedAch": {
+      "title": "Originated ACH",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "originatedAchTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer" },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "description": { "type": "string" },
+            "addenda": { "type": "string" },
+            "counterparty": { "$ref": "payment.json#/definitions/counterparty" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "description", "counterparty" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "receivedAch": {
+      "title": "Received ACH",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "receivedAchTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "description": { "type": "string" },
+            "addenda": { "type": "string" },
+            "companyName": { "type": "string" },
+            "counterpartyName": { "type": "string" },
+            "counterpartyRoutingNumber": { "type": "string" },
+            "traceNumber": { "type": "string" },
+            "secCode": { "type": "string", "minLength": 3, "maxLength": 3 },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "description", "companyName", "counterpartyRoutingNumber" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "returnedAch": {
+      "title": "Returned ACH",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "returnedAchTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "companyName": { "type": "string" },
+            "counterpartyName": { "type": "string" },
+            "counterpartyRoutingNumber": { "type": "string" },
+            "reason": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "companyName", "counterpartyName", "counterpartyRoutingNumber", "reason" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "returnedReceivedAch": {
+      "title": "Returned Received ACH",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "returnedReceivedAchTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "companyName": { "type": "string" },
+            "reason": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "companyName", "reason" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "dishonoredAch": {
+      "title": "Dishonored Return ACH",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "dishonoredAchTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "description": { "type": "string" },
+            "companyName": { "type": "string" },
+            "counterpartyName": { "type": "string" },
+            "counterpartyRoutingNumber": { "type": "string" },
+            "traceNumber": { "type": "string" },
+            "reason": { "type": "string" },
+            "secCode": { "type": "string", "minLength": 3, "maxLength": 3 },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "description", "companyName", "counterpartyRoutingNumber" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "book": {
+      "title": "Book",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "bookTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "counterparty": { "$ref": "payment.json#/definitions/counterparty" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "counterparty" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "purchase": {
+      "title": "Purchase",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "purchaseTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "cardLast4Digits": { "type": "string" },
+            "merchant": { "$ref": "types.json#/definitions/merchant" },
+            "coordinates": { "$ref": "types.json#/definitions/coordinates" },
+            "recurring": { "type": "boolean" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "networkTransactionId": { "type": "string" },
+            "interchange": {"oneOf": [{ "type": "string" }, { "type": "null" }]},
+            "ecommerce": { "type": "boolean" },
+            "cardPresent": { "type": "boolean" },
+            "internationalServiceFee": { "type": "integer"},
+            "paymentMethod": { "type": "string" },
+            "digitalWallet": { "type": "string" },
+            "cardVerificationData": {
+              "$ref": "types.json#/definitions/cardVerificationData"
+            },
+            "cardNetwork": { "type": "string" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "cardLast4Digits", "merchant", "recurring", "ecommerce", "cardPresent" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "atm": {
+      "title": "ATM",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "atmTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "cardLast4Digits": { "type": "string" },
+            "atmName": { "type": "string" },
+            "atmLocation": {"type": "string" },
+            "surcharge": {"type": "integer"},
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "networkTransactionId": { "type": "string" },
+            "interchange": {"oneOf": [{ "type": "string" }, { "type": "null" }]},
+            "internationalServiceFee": { "type": "integer"},
+            "cardNetwork": { "type": "string" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "cardLast4Digits", "atmName", "surcharge" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "fee": {
+      "title": "Fee",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "feeTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "reversal": {
+      "title": "Reversal",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "cardReversalTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" },
+            "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "cardLast4Digits": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "networkTransactionId": { "type": "string" },
+            "internationalServiceFee": { "type": "integer"}
+
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "cardLast4Digits"],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "cardTransaction": {
+      "title": "cardTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "cardTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "cardLast4Digits": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" },
+            "networkTransactionId": { "type": "string" },
+            "interchange": {"oneOf": [{ "type": "string" }, { "type": "null" }]},
+            "internationalServiceFee": { "type": "integer"},
+            "merchant": { "$ref": "types.json#/definitions/merchant" },
+            "recurring": { "type": "boolean" },
+            "paymentMethod": { "type": "string" },
+            "digitalWallet": { "type": "string" },
+            "cardVerificationData": {
+              "$ref": "types.json#/definitions/cardVerificationData"
+            },
+            "cardNetwork": { "type": "string" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "cardLast4Digits", "merchant", "recurring"],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "wire": {
+      "title": "wireTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "wireTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "counterparty": { "$ref": "payment.json#/definitions/counterparty" },
+            "description": {"type": "string"},
+            "senderReference": {"type": "string"},
+            "referenceForBeneficiary": {"type": "string"},
+            "originatorToBeneficiaryInformation": {"type": "string"},
+            "beneficiaryInformation": {"type": "string"},
+            "beneficiaryAdviceInformation": {"type": "string"},
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "counterparty" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "adjustment": {
+      "title": "adjustmentTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "adjustmentTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "description": {"type": "string"},
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "interchange": {
+      "title": "interchangeShareTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "interchangeShareTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "interestShare": {
+      "title": "interestShareTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "interestShareTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "interest": {
+      "title": "interestTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "interestTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "releaseTransaction": {
+      "title": "releaseTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "releaseTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "senderName": { "type": "string" },
+            "description": {"type": "string"},
+            "senderAccountNumber": { "type": "string", "maxLength": 17 },
+            "senderAddress": {
+              "$ref": "types.json#/definitions/address"
+            },
+            "counterparty": { "$ref": "payment.json#/definitions/counterparty" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "counterparty" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "disputeSettlement": {
+      "title": "disputeSettlementTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "disputeSettlementTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "dispute": {
+      "title": "disputeTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "disputeTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "amount": { "type": "integer" }, "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "reason": { "type": "string" },
+            "disputeId": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "reason", "disputeId" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "checkDeposit": {
+      "title": "checkDepositTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "checkDepositTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "returnedCheckDeposit": {
+      "title": "returnedCheckDepositTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "returnedCheckDepositTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "reason": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "paymentCanceled": {
+      "title": "paymentCanceledTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "paymentCanceledTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "reason": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "billPayTransaction": {
+      "title": "billPayTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "billPayTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "settlementTransaction": {
+      "title": "settlementTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "settlementTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "sponsoredInterestTransaction": {
+      "title": "sponsoredInterestTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "sponsoredInterestTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "paymentAdvance": {
+      "title": "paymentAdvanceTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "paymentAdvanceTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "repaidPaymentAdvance": {
+      "title": "repaidPaymentAdvanceTransaction",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "repaidPaymentAdvanceTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "amount": { "type": "integer" },
+            "direction": { "type": "string", "enum": [ "Credit", "Debit" ] },
+            "balance": { "type": "integer"},
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [ "type", "id", "attributes", "relationships" ]
+    },
+    "chargeback": {
+      "title": "Chargeback",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "chargebackTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "counterparty": { "$ref": "payment.json#/definitions/counterparty" },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+
+
+    "transaction": {
+      "title": "Transaction",
+      "oneOf": [
+        { "$ref": "#/definitions/originatedAch" },
+        { "$ref": "#/definitions/receivedAch" },
+        { "$ref": "#/definitions/returnedAch" },
+        { "$ref": "#/definitions/returnedReceivedAch" },
+        { "$ref": "#/definitions/dishonoredAch" },
+        { "$ref": "#/definitions/purchase" },
+        { "$ref": "#/definitions/book" },
+        { "$ref": "#/definitions/atm" },
+        { "$ref": "#/definitions/fee" },
+        { "$ref": "#/definitions/reversal" },
+        { "$ref": "#/definitions/cardTransaction" },
+        { "$ref": "#/definitions/releaseTransaction" },
+        { "$ref": "#/definitions/wire" },
+        { "$ref": "#/definitions/interchange" },
+        { "$ref": "#/definitions/interestShare" },
+        { "$ref": "#/definitions/interest" },
+        { "$ref": "#/definitions/adjustment" },
+        { "$ref": "#/definitions/disputeSettlement" },
+        { "$ref": "#/definitions/dispute" },
+        { "$ref": "#/definitions/checkDeposit" },
+        { "$ref": "#/definitions/returnedCheckDeposit" },
+        { "$ref": "#/definitions/billPayTransaction" },
+        { "$ref": "#/definitions/settlementTransaction" },
+        { "$ref": "#/definitions/sponsoredInterestTransaction" },
+        { "$ref": "#/definitions/billPayTransaction" },
+        { "$ref": "#/definitions/paymentAdvance" },
+        { "$ref": "#/definitions/repaidPaymentAdvance" },
+        { "$ref": "#/definitions/chargeback" },
+        { "$ref": "#/definitions/reward" },
+        { "$ref": "#/definitions/negativeBalanceCoverage" },
+        { "$ref": "#/definitions/accountLowBalanceClosure" }
+      ]
+    },
+    "reward" : {
+      "title": "Reward",
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "types.json#/definitions/identifier"
+        },
+        "type": {
+          "type": "string",
+          "const": "rewardTransaction"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "Credit",
+                "Debit"
+              ]
+            },
+            "receiverCounterparty": {
+              "$ref": "payment.json#/definitions/counterparty"
+            },
+            "amount": {
+              "type": "integer"
+            },
+            "balance": {
+              "type": "integer"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "tags": {
+              "$ref": "tags.json#/definitions/tags"
+            }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary", "receiverCounterparty" ],
+          "additionalProperties": false
+        },
+        "relationships": {
+          "$ref": "#/definitions/relationships"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "negativeBalanceCoverage": {
+      "title": "NegativeBalanceCoverage",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "negativeBalanceCoverageTransaction" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "direction", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "accountLowBalanceClosure": {
+      "title": "AccountLowBalanceClosure",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "types.json#/definitions/identifier" },
+        "type": { "type": "string", "const": "accountLowBalanceClosure" },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "createdAt": { "type": "string", "format": "date-time" },
+            "direction": { "type": "string", "enum": ["Credit", "Debit"] },
+            "amount": { "type": "integer"},
+            "balance": { "type": "integer" },
+            "summary": { "type": "string" },
+            "tags": { "$ref": "tags.json#/definitions/tags" }
+          },
+          "required": [ "createdAt", "amount", "balance", "summary" ],
+          "additionalProperties": false
+        },
+        "relationships": { "$ref": "#/definitions/relationships" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "attributes",
+        "relationships"
+      ]
+    }
+  },
+
+  "title": "Transaction Resource",
+  "type": "object",
+  "properties": {
+    "data": { "$ref": "#/definitions/transaction" }
+  },
+  "additionalProperties": false,
+  "required": [ "data" ]
+}
