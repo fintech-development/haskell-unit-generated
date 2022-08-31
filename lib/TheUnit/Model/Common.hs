@@ -3,7 +3,9 @@
 module TheUnit.Model.Common where
 
 import qualified Data.Aeson as J
+import Data.Aeson.Deriving
 import qualified Data.OpenApi as OpenApi
+import qualified Data.Text as T
 import GHC.Generics (Generic)
 
 -- SEE: more generated types here:
@@ -36,3 +38,25 @@ data MetaPagination = MetaPagination
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
+
+--
+
+-- | More about [DeviceFingerprint](https://developers.unit.co/types#devicefingerprint)
+data DeviceFingerprint = DeviceFingerprint
+  { -- | Provider of the device fingerprint fraud and risk prevention. The value is always iovation
+    provider :: !T.Text,
+    -- | The device fingerprint blackbox value.
+    value :: !T.Text
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
+
+-- * Relationships
+
+data RelationshipsObject = RelationshipsObject
+  { _type :: !T.Text,
+    _id :: !T.Text
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (OpenApi.ToSchema)
+  deriving (J.ToJSON, J.FromJSON) via GenericEncoded '[FieldLabelModifier := DropPrefix "_"] RelationshipsObject

@@ -1,0 +1,46 @@
+{
+  "data": {
+    "type": "individualApplication",
+    "id": "595420",
+    "attributes": {
+      "createdAt": "2022-09-01T13:35:31.553Z",
+      "fullName": {
+        "first": "April",
+        "last": "Dddd"
+      },
+      "ssn": "000000004",
+      "address": {
+        "street": "20 Ingram St",
+        "city": "Forest Hills",
+        "state": "CA",
+        "postalCode": "11375",
+        "country": "US"
+      },
+      "dateOfBirth": "2001-08-10",
+      "email": "april@baxter.com",
+      "phone": {
+        "countryCode": "1",
+        "number": "2025550108"
+      },
+      "status": "Pending",
+      "message": "We’re having trouble verifying your identity. If your application was processed between 8 am to 8 pm EST please allow 2 hours for someone to review your application. If your application was received between 8 pm EST to 8 AM EST, we will review your application by 9 AM EST the following day. We will contact you if any additional documentation is needed.",
+      "evaluationId": "S-3AQf25yntBo4Iqi95KAa",
+      "soleProprietorship": false,
+      "tags": {
+        "test": "webhook-tag",
+        "key": "another-tag",
+        "number": "111"
+      },
+      "archived": false
+    },
+    "relationships": {
+      "org": {
+        "data": {
+          "type": "org",
+          "id": "1988"
+        }
+      }
+    }
+  },
+  "included": []
+}

@@ -1,0 +1,53 @@
+{
+  "data": {
+    "type": "individualApplication",
+    "id": "593341",
+    "attributes": {
+      "createdAt": "2022-08-31T15:05:21.664Z",
+      "fullName": {
+        "first": "April",
+        "last": "Dddd"
+      },
+      "ssn": "123456789",
+      "address": {
+        "street": "20 Ingram St",
+        "city": "Forest Hills",
+        "state": "CA",
+        "postalCode": "11375",
+        "country": "US"
+      },
+      "dateOfBirth": "2001-08-10",
+      "email": "april@baxter.com",
+      "phone": {
+        "countryCode": "1",
+        "number": "2025550108"
+      },
+      "status": "Approved",
+      "message": "Congrats - your application has been approved!",
+      "evaluationId": "S-OQ2pgYBGBTQYs0Iqv46o",
+      "soleProprietorship": false,
+      "tags": {
+        "test": "webhook-tag",
+        "key": "another-tag",
+        "number": "111"
+      },
+      "archived": false,
+      "updatedAt": "2022-08-31T15:05:22.675Z"
+    },
+    "relationships": {
+      "org": {
+        "data": {
+          "type": "org",
+          "id": "1988"
+        }
+      },
+      "customer": {
+        "data": {
+          "type": "individualCustomer",
+          "id": "512138"
+        }
+      }
+    }
+  },
+  "included": []
+}

@@ -45,6 +45,9 @@ dependencies:
 - vector >=0.10.9 && <0.13
 - haskell-client-generated
 - openapi3
+- aeson-deriving
+- lens
+- generic-lens
 
 ghc-options:
   - -Wall
@@ -101,3 +104,19 @@ default-extensions:
 
 library:
   source-dirs: lib
+tests:
+  haskell-unit-generated-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -Wno-incomplete-uni-patterns
+    dependencies:
+      - haskell-unit-generated
+      - hspec
+      - hspec-core
+      - hspec-expectations-json
+      - aeson-qq
+

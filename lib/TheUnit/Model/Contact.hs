@@ -7,6 +7,7 @@ import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Network.Integrated.HTTP.Core (Date)
+import TheUnit.Model.Orphans.Date ()
 
 data FullName = FullName
   { -- | 	Individual first name.
@@ -53,9 +54,39 @@ data BaseContactAttributes = BaseContactAttributes
     phone :: !PhoneNumber,
     email :: !T.Text
   }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
 data AuthorizedUser = AuthorizedUser
   { fullName :: !FullName,
     phone :: !PhoneNumber,
     email :: !T.Text
   }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
+
+data Status
+  = Approved
+  | Denied
+  | PendingReview
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
+
+data Agent = Agent
+  { fullName :: !FullName,
+    ssn :: !(Maybe T.Text),
+    dateOfBirth :: !Date,
+    address :: !Address,
+    phone :: !PhoneNumber,
+    email :: !T.Text,
+    -- | One of Approved, Denied or PendingReview.
+    status :: !Status,
+    -- | Passport of the agent. One of ssn or passport is required.
+    passport :: !(Maybe T.Text),
+    -- | ISO31661-Alpha2 T.Text	Only when Passport is populated. Two letters representing the agent's nationality.
+    nationality :: !(Maybe T.Text),
+    -- | Optional. See [this](https://docs.unit.co/customer-api-tokens/#customers-create-customer-bearer-token-jwt) section for more information.
+    jwtSubject :: !(Maybe T.Text)
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)

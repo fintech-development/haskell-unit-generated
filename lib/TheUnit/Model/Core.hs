@@ -1,6 +1,8 @@
 module TheUnit.Model.Core where
 
+import Data.Aeson ((.:))
 import qualified Data.Aeson as J
+import qualified Data.Aeson.Types as J
 import qualified Data.Text as T
 import Prelude as P
 
@@ -10,3 +12,8 @@ _omitNulls = J.object . P.filter notNull
   where
     notNull (_, J.Null) = False
     notNull _ = True
+
+(.->) :: J.FromJSON a => J.Parser J.Object -> T.Text -> J.Parser a
+(.->) parser key = do
+  obj <- parser
+  obj .: key
