@@ -48,6 +48,7 @@ dependencies:
 - aeson-deriving
 - lens
 - generic-lens
+- uuid
 
 ghc-options:
   - -Wall
@@ -119,4 +120,7 @@ tests:
       - hspec-core
       - hspec-expectations-json
       - aeson-qq
+      - parsec
+      - load-env
+      - uuid
 

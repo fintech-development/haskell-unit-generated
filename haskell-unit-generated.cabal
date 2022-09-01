@@ -105,6 +105,7 @@ library
     , time >=1.5
     , transformers >=0.4.0.0
     , unordered-containers
+    , uuid
     , vector >=0.10.9 && <0.13
   default-language: Haskell2010
 
@@ -115,8 +116,11 @@ test-suite haskell-unit-generated-test
       Aeson
       Aeson.Application
       Fixtures
+      Fixtures.Client
       Fixtures.GoldenFile
       Fixtures.Helpers
+      Integration
+      Integration.CreateIndividualApplication
       Paths_haskell_unit_generated
   hs-source-dirs:
       test
@@ -184,15 +188,18 @@ test-suite haskell-unit-generated-test
     , http-types >=0.8 && <0.13
     , iso8601-time
     , lens
+    , load-env
     , microlens >=0.4.3 && <0.5
     , mtl >=2.2.1
     , network >=2.6.2 && <3.9
     , openapi3
+    , parsec
     , random >=1.1
     , safe-exceptions <0.2
     , text >=0.11 && <1.3
     , time >=1.5
     , transformers >=0.4.0.0
     , unordered-containers
+    , uuid
     , vector >=0.10.9 && <0.13
   default-language: Haskell2010
