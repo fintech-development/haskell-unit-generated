@@ -13,7 +13,7 @@ import qualified TheUnit.Model.Application.ApplicationStatus as ApplicationStatu
 import TheUnit.Model.Application.ApplicationType (ApplicationType (..))
 import TheUnit.Model.Common (DeviceFingerprint)
 import TheUnit.Model.Contact (Address, Agent, FullName, PhoneNumber)
-import TheUnit.Model.Core ((.->))
+import TheUnit.Model.Core ((.->), _omitNulls)
 import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId)
 import TheUnit.Model.Envelope (UnitEnvelope (UnitEnvelope))
 
@@ -67,7 +67,7 @@ data CreateIndividualApplicationRequest = CreateIndividualApplicationRequest
 instance J.ToJSON CreateIndividualApplicationRequest where
   toJSON CreateIndividualApplicationRequest {individualApplication = IndividualApplication {..}, ..} =
     let attributes =
-          J.object
+          _omitNulls
             [ "ssn" .= ssn,
               "passport" .= passport,
               "nationality" .= nationality,
