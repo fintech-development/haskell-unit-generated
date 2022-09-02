@@ -3,6 +3,7 @@
 module TheUnit.Model.Contact where
 
 import qualified Data.Aeson as J
+import Data.Aeson.Deriving
 import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
@@ -65,12 +66,17 @@ data AuthorizedUser = AuthorizedUser
   deriving (Show, Eq, Generic)
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
-data Status
-  = Approved
-  | Denied
-  | PendingReview
+data ContactStatus
+  = Contact'Approved
+  | Contact'Denied
+  | Contact'PendingReview
   deriving (Show, Eq, Generic)
-  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
+  deriving anyclass (OpenApi.ToSchema)
+  deriving
+    (J.ToJSON, J.FromJSON)
+    via GenericEncoded
+          '[ConstructorTagModifier := DropPrefix "Contact'"]
+          ContactStatus
 
 data Agent = Agent
   { fullName :: !FullName,
@@ -80,7 +86,7 @@ data Agent = Agent
     phone :: !PhoneNumber,
     email :: !T.Text,
     -- | One of Approved, Denied or PendingReview.
-    status :: !Status,
+    status :: !ContactStatus,
     -- | Passport of the agent. One of ssn or passport is required.
     passport :: !(Maybe T.Text),
     -- | ISO31661-Alpha2 T.Text	Only when Passport is populated. Two letters representing the agent's nationality.

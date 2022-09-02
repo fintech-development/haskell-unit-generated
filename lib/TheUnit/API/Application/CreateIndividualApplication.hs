@@ -1,13 +1,18 @@
-module TheUnit.API.Application.CreateIndividualApplication (createIndividualApplication) where
+module TheUnit.API.Application.CreateIndividualApplication
+  ( createIndividualApplication,
+  )
+where
 
 import qualified Data.Proxy as P
 import Network.Integrated.HTTP.Auth (Auth20BearerToken)
 import Network.Integrated.HTTP.Core (HasBodyParam)
 import qualified Network.Integrated.HTTP.Core as Core
 import Network.Integrated.HTTP.MimeTypes (Consumes, MimeVndApiJSON, Produces)
-import TheUnit.Model.Application (CreateIndividualApplicationRequest, CreateIndividualApplicationResponse)
-import TheUnit.Model.Envelope (UnitEnvelope (..))
-import TheUnit.Model.Response (UnitResponse)
+import TheUnit.Model.Application
+  ( CreateIndividualApplicationRequest,
+    CreateIndividualApplicationResponse,
+  )
+import TheUnit.Model.Response (UnitEnvelope (..), UnitResponse)
 
 data CreateApplicationRequest
 

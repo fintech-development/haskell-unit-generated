@@ -5,17 +5,15 @@ module TheUnit.Model.Application.IndividualApplication where
 import Control.Applicative ((<|>))
 import Data.Aeson ((.:), (.:?), (.=))
 import qualified Data.Aeson as J
-import qualified Data.Map.Strict as Map
 import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
 import qualified TheUnit.Model.Application.ApplicationStatus as ApplicationStatus
 import TheUnit.Model.Application.ApplicationType (ApplicationType (..))
-import TheUnit.Model.Common (DeviceFingerprint)
+import TheUnit.Model.Common (DeviceFingerprint, Tags)
 import TheUnit.Model.Contact (Address, Agent, FullName, PhoneNumber)
 import TheUnit.Model.Core ((.->), _omitNulls)
 import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId)
-import TheUnit.Model.Envelope (UnitEnvelope (UnitEnvelope))
 
 data IndividualApplication = IndividualApplication
   { -- | SSN of the individual (numbers only). Either an SSN or a passport number is required.
@@ -45,7 +43,7 @@ data IndividualApplication = IndividualApplication
     -- | Optional. Indicates if the individual is a sole proprietor who is doing business under a different name, if specified.
     dba :: !(Maybe T.Text),
     -- | See [Tags](https://developers.unit.co/#tags).
-    tags :: !(Maybe (Map.Map T.Text T.Text))
+    tags :: !(Maybe Tags)
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
@@ -148,7 +146,7 @@ instance J.FromJSON CreateIndividualApplicationResponse where
       approved o = do
         ApplicationStatus.Approved <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        UnitEnvelope customer <- o .: "relationships" .-> "customer"
+        customer <- o .: "relationships" .-> "customer"
         let approvedResult = IndividualApplicationApproved {..}
         pure $ CreateIndividualApplicationResponse'Approved approvedResult
 

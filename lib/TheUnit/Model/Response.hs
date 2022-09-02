@@ -12,6 +12,24 @@ import qualified Data.Text as T
 import GHC.Generics (Generic)
 import TheUnit.Model.Core (_omitNulls)
 
+-- | Used to wrap all Unit request payloads
+-- Additionally used in relationships objects and
+newtype UnitEnvelope a = UnitEnvelope {payload :: a}
+  deriving (Show, Eq, Generic)
+
+-- | FromJSON UnitResponse
+instance (J.FromJSON a) => J.FromJSON (UnitEnvelope a) where
+  parseJSON = J.withObject "UnitEnvelope" $ \o ->
+    UnitEnvelope <$> o .: "data"
+
+-- | ToJSON UnitResponse
+instance (J.ToJSON a) => J.ToJSON (UnitEnvelope a) where
+  toJSON (UnitEnvelope {payload}) =
+    J.object ["data" .= payload]
+
+-- | ToSchema UnitResponse
+instance OpenApi.ToSchema a => OpenApi.ToSchema (UnitEnvelope a)
+
 data UnitResponse a = UnitErrorResponse (NE.NonEmpty UnitErrorPayload) | UnitResponseData a
   deriving (Show, Eq, Generic)
 

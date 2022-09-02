@@ -46,7 +46,6 @@ dependencies:
 - haskell-client-generated
 - openapi3
 - aeson-deriving
-- lens
 - generic-lens
 - uuid
 

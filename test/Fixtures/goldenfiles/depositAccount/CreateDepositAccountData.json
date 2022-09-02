@@ -1,0 +1,20 @@
+{
+  "data": {
+    "type": "depositAccount",
+    "attributes": {
+      "depositProduct": "checking",
+      "tags": {
+        "purpose": "checking"
+      },
+      "idempotencyKey": "3a1a33be-4e12-4603-9ed0-820922389fb8"
+    },
+    "relationships": {
+      "customer": {
+        "data": {
+          "type": "customer",
+          "id": "45555"
+        }
+      }
+    }
+  }
+}

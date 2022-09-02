@@ -5,7 +5,6 @@ import Data.Aeson as J
 import Data.Generics.Labels ()
 import Fixtures
 import Test.Hspec (Spec, describe, it, shouldBe)
-import Test.Hspec.Expectations.Json (shouldMatchJson)
 import TheUnit.Model.Application (ApplicationStatus (..), CreateIndividualApplicationResponse)
 import TheUnit.Model.Application.IndividualApplication
   ( CreateIndividualApplicationRequest,
@@ -15,8 +14,7 @@ import TheUnit.Model.Application.IndividualApplication
     IndividualApplicationPending (..),
   )
 import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId (IndividualCustomerId))
-import TheUnit.Model.Envelope (UnitEnvelope)
-import TheUnit.Model.Response (UnitResponse (..))
+import TheUnit.Model.Response (UnitEnvelope, UnitResponse (..))
 
 spec :: Spec
 spec = do
@@ -26,11 +24,7 @@ spec = do
 applicationRequest :: Spec
 applicationRequest = do
   it "CreateIndividualApplicationRequest" do
-    rawJsonData <- goldenFile $ IndividualApplication File'Request
-    let expected :: J.Value = fromMaybeError "invalid expected" $ J.decode' rawJsonData
-    let res :: Either String (UnitEnvelope CreateIndividualApplicationRequest) = J.eitherDecode' rawJsonData
-    let req = fromLeftError "JsonDecode" res
-    J.toJSON req `shouldMatchJson` expected
+    verifyJSON @(UnitEnvelope CreateIndividualApplicationRequest) $ IndividualApplication File'Request
 
 applicationResponse :: Spec
 applicationResponse = describe "CreateIndividualApplicationResponse" do

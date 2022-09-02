@@ -1,4 +1,4 @@
-module Fixtures.Client (makeClient, Client (..)) where
+module Fixtures.Client (makeAPI, UnitAPI (..)) where
 
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
@@ -11,26 +11,51 @@ import Network.Integrated.HTTP.Client (MimeError)
 import qualified Network.Integrated.HTTP.Core as Core
 import Network.Integrated.HTTP.DispatchClient (makeDispatchClient)
 import qualified Network.Integrated.HTTP.DispatchClient as Dispatch
-import Network.Integrated.HTTP.MimeTypes (MimeType, MimeUnrender, Produces)
 import qualified System.Environment as Env
+import qualified TheUnit.API as API
+import qualified TheUnit.Model as Model
 
-setAuth :: BS.ByteString -> Core.ClientConfig -> Core.ClientConfig
-setAuth token = (`Core.addAuthMethod` Auth20BearerToken token)
+type APIResponse a = IO (Either MimeError (Model.UnitResponse a))
 
-newtype Client req res accept contentType = Client {performRequest :: Core.Request req contentType res accept -> IO (Either MimeError res)}
+data UnitAPI = UnitAPI
+  { createIndividualApplication :: Model.CreateIndividualApplicationRequest -> APIResponse Model.CreateIndividualApplicationResponse,
+    -- | strict version of `createIndividualApplication`
+    createIndividualApplication' :: Model.CreateIndividualApplicationRequest -> IO Model.CreateIndividualApplicationResponse,
+    --
+    createDepositAccount :: Model.CreateDepositAccountData -> APIResponse Model.UnitDepositAccount,
+    -- | strict version of `createDepositAccount
+    createDepositAccount' :: Model.CreateDepositAccountData -> IO Model.UnitDepositAccount
+  }
 
-makeClient ::
-  forall req res accept contentType.
-  (Produces req accept, MimeUnrender accept res, MimeType contentType) =>
-  IO (Client req res accept contentType)
-makeClient = do
+makeAPI :: IO UnitAPI
+makeAPI = do
   token <- encode <$> Env.getEnv "UNIT_ORG_AUTH_TOKEN"
   host <- encodeL <$> Env.getEnv "UNIT_API_HOST"
   cfg <- Core.newConfig host <&> setAuth token
 
   manager <- HTTP.newTlsManager
-  let dispatchClient = makeDispatchClient manager cfg
-  pure $ Client (Dispatch.dispatchMime' dispatchClient)
+  let createIndividualApplication =
+        Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createIndividualApplication
+  let createDepositAccount =
+        Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createDepositAccount
+
+  pure $
+    UnitAPI
+      { createIndividualApplication,
+        createIndividualApplication' = fmap handleResponse . createIndividualApplication,
+        createDepositAccount,
+        createDepositAccount' = fmap handleResponse . createDepositAccount
+      }
+  where
+    handleResponse :: Either MimeError (Model.UnitResponse a) -> a
+    handleResponse resp =
+      case resp of
+        Left e -> error $ "Got HTTP error: " <> show e
+        Right (Model.UnitErrorResponse errs) -> error $ "Expect successful response, but got error: " <> show errs
+        Right (Model.UnitResponseData a) -> a
+
+setAuth :: BS.ByteString -> Core.ClientConfig -> Core.ClientConfig
+setAuth token = (`Core.addAuthMethod` Auth20BearerToken token)
 
 encode :: String -> BS.ByteString
 encode = T.encodeUtf8 . T.pack

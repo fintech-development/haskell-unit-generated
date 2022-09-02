@@ -19,8 +19,13 @@ extra-source-files:
 library
   exposed-modules:
       TheUnit
+      TheUnit.API
+      TheUnit.API.Accounts.CreateDepositAccount
       TheUnit.API.Application.CreateIndividualApplication
       TheUnit.Model
+      TheUnit.Model.Accounts
+      TheUnit.Model.Accounts.DepositAccount
+      TheUnit.Model.Accounts.UnitDepositProduct
       TheUnit.Model.Application
       TheUnit.Model.Application.ApplicationStatus
       TheUnit.Model.Application.ApplicationType
@@ -28,8 +33,9 @@ library
       TheUnit.Model.Common
       TheUnit.Model.Contact
       TheUnit.Model.Core
+      TheUnit.Model.Customer
       TheUnit.Model.Customer.IndividualCustomer
-      TheUnit.Model.Envelope
+      TheUnit.Model.Orphans
       TheUnit.Model.Orphans.Date
       TheUnit.Model.Response
   other-modules:
@@ -94,7 +100,6 @@ library
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13
     , iso8601-time
-    , lens
     , microlens >=0.4.3 && <0.5
     , mtl >=2.2.1
     , network >=2.6.2 && <3.9
@@ -115,11 +120,14 @@ test-suite haskell-unit-generated-test
   other-modules:
       Aeson
       Aeson.Application
+      Aeson.DepositAccount
       Fixtures
       Fixtures.Client
       Fixtures.GoldenFile
       Fixtures.Helpers
+      Fixtures.VerifyJSON
       Integration
+      Integration.CreateDepositAccount
       Integration.CreateIndividualApplication
       Paths_haskell_unit_generated
   hs-source-dirs:
@@ -187,7 +195,6 @@ test-suite haskell-unit-generated-test
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13
     , iso8601-time
-    , lens
     , load-env
     , microlens >=0.4.3 && <0.5
     , mtl >=2.2.1

@@ -2,11 +2,13 @@
 
 module TheUnit.Model.Common where
 
+import Data.Aeson ((.:), (.=))
 import qualified Data.Aeson as J
-import Data.Aeson.Deriving
+import qualified Data.Map.Strict as Map
 import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
+import TheUnit.Model.Core ((.->))
 
 -- SEE: more generated types here:
 -- - https://github.com/unit-finance/unit-node-sdk/blob/main/types/common.ts
@@ -59,4 +61,29 @@ data RelationshipsObject = RelationshipsObject
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
-  deriving (J.ToJSON, J.FromJSON) via GenericEncoded '[FieldLabelModifier := DropPrefix "_"] RelationshipsObject
+
+instance J.ToJSON RelationshipsObject where
+  -- "relationships": {
+  --          "org": {
+  --              "data": {
+  --                  "type": "org",
+  --                  "id": "1988"
+  --              }
+  --          },
+  --          "customer": {
+  --              "data": {
+  --                  "type": "individualCustomer",
+  --                  "id": "515994"
+  --              }
+  --          }
+  --      }
+  toJSON RelationshipsObject {..} =
+    J.object ["data" .= J.object ["type" .= _type, "id" .= _id]]
+
+instance J.FromJSON RelationshipsObject where
+  parseJSON = J.withObject "RelationshipsObject" \o -> do
+    _type <- o .: "data" .-> "type"
+    _id <- o .: "data" .-> "id"
+    pure RelationshipsObject {..}
+
+type Tags = Map.Map T.Text T.Text
