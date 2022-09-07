@@ -120,9 +120,9 @@ data CreateIndividualApplicationResponse
   = -- | Application was Approved
     CreateIndividualApplicationResponse'Approved IndividualApplicationApproved
   | -- | The application was denied. A Customer resource will not be created.
-    CreateIndividualApplicationResponse'Denied
+    CreateIndividualApplicationResponse'Denied IndividualApplicationDenied
   | -- | The application was сanceled. A Customer resource will not be created.
-    CreateIndividualApplicationResponse'Canceled
+    CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled
   | -- | Certain documents are required for the process to continue. You may upload them via Upload Document.
     CreateIndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments
   | CreateIndividualApplicationResponse'PendingReview IndividualApplicationPending
@@ -167,11 +167,13 @@ instance J.FromJSON CreateIndividualApplicationResponse where
 
       denied o = do
         ApplicationStatus.Denied <- o .: "attributes" .-> "status"
-        pure CreateIndividualApplicationResponse'Denied
+        applicationId <- o .: "id"
+        pure $ CreateIndividualApplicationResponse'Denied IndividualApplicationDenied {..}
 
       canceled o = do
         ApplicationStatus.Canceled <- o .: "attributes" .-> "status"
-        pure CreateIndividualApplicationResponse'Canceled
+        applicationId <- o .: "id"
+        pure $ CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled {..}
 
 --
 
@@ -202,6 +204,18 @@ data IndividualApplicationAwaitingDocuments = IndividualApplicationAwaitingDocum
 data IndividualApplicationPending = IndividualApplicationPending
   { -- | The application is being evaluated asynchronously and a result should be available shortly. Listen for webhooks (application.denied, customer.created and application.awaitingdocuments) for the final result, or periodically query the application with Get by Id).
     applicationId :: !T.Text
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (OpenApi.ToSchema)
+
+data IndividualApplicationDenied = IndividualApplicationDenied
+  { applicationId :: !T.Text
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (OpenApi.ToSchema)
+
+data IndividualApplicationCanceled = IndividualApplicationCanceled
+  { applicationId :: !T.Text
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)

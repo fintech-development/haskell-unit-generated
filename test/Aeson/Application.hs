@@ -11,6 +11,8 @@ import TheUnit.Model.Application.IndividualApplication
     CreateIndividualApplicationResponse (..),
     IndividualApplicationApproved (..),
     IndividualApplicationAwaitingDocuments (..),
+    IndividualApplicationCanceled (..),
+    IndividualApplicationDenied (..),
     IndividualApplicationPending (..),
   )
 import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId (IndividualCustomerId))
@@ -32,14 +34,16 @@ applicationResponse = describe "CreateIndividualApplicationResponse" do
   let awaitingDocuments = CreateIndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {applicationId = "53"}
   let pending' = CreateIndividualApplicationResponse'Pending IndividualApplicationPending {applicationId = "595420"}
   let pendingReview' = CreateIndividualApplicationResponse'PendingReview IndividualApplicationPending {applicationId = "595421"}
+  let canceled = CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled {applicationId = "1"}
+  let denied = CreateIndividualApplicationResponse'Denied IndividualApplicationDenied {applicationId = "2"}
 
   let table =
         [ (Approved, File'ResponseApproved, approved'),
           (AwaitingDocuments, File'ResponseAwaitingDocuments, awaitingDocuments),
           (Pending, File'ResponsePending, pending'),
           (PendingReview, File'ResponsePendingReview, pendingReview'),
-          (Canceled, File'ResponseCanceled, CreateIndividualApplicationResponse'Canceled),
-          (Denied, File'ResponseDenied, CreateIndividualApplicationResponse'Denied)
+          (Canceled, File'ResponseCanceled, canceled),
+          (Denied, File'ResponseDenied, denied)
         ]
   forM_ table \(status, goldenFile', expected) ->
     it ("Decode response: " <> show status) do

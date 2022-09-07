@@ -33,7 +33,7 @@ spec =
       resp <- createIndividualApplication deniedRequest
       case resp of
         Left e -> error $ "Got HTTP error: " <> show e
-        Right (UnitResponseData CreateIndividualApplicationResponse'Denied) -> pure () -- success
+        Right (UnitResponseData (CreateIndividualApplicationResponse'Denied _)) -> pure () -- success
         Right r -> error $ "Expect application Denied, but got: " <> show r
     --
     it "PendingReview" \UnitAPI {createIndividualApplication} -> do
