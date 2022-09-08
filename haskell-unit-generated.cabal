@@ -31,10 +31,10 @@ library
       TheUnit.Model.Application.ApplicationType
       TheUnit.Model.Application.IndividualApplication
       TheUnit.Model.Common
-      TheUnit.Model.Contact
       TheUnit.Model.Core
       TheUnit.Model.Customer
       TheUnit.Model.Customer.IndividualCustomer
+      TheUnit.Model.Customer.PersonalData
       TheUnit.Model.Orphans
       TheUnit.Model.Orphans.Date
       TheUnit.Model.Response

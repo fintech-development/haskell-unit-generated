@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveAnyClass #-}
 
-module TheUnit.Model.Contact where
+module TheUnit.Model.Customer.PersonalData where
 
 import qualified Data.Aeson as J
 import Data.Aeson.Deriving

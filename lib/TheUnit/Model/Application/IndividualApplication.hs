@@ -11,9 +11,9 @@ import GHC.Generics (Generic)
 import qualified TheUnit.Model.Application.ApplicationStatus as ApplicationStatus
 import TheUnit.Model.Application.ApplicationType (ApplicationType (..))
 import TheUnit.Model.Common (DeviceFingerprint, Tags)
-import TheUnit.Model.Contact (Address, Agent, FullName, PhoneNumber)
 import TheUnit.Model.Core ((.->), _omitNulls)
 import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId)
+import TheUnit.Model.Customer.PersonalData (Address, Agent, FullName, PhoneNumber)
 
 data IndividualApplication = IndividualApplication
   { -- | SSN of the individual (numbers only). Either an SSN or a passport number is required.
