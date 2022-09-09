@@ -12,8 +12,8 @@ import qualified TheUnit.Model.Application.ApplicationStatus as ApplicationStatu
 import TheUnit.Model.Application.ApplicationType (ApplicationType (..))
 import TheUnit.Model.Common (DeviceFingerprint, Tags)
 import TheUnit.Model.Core ((.->), _omitNulls)
-import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId)
 import TheUnit.Model.Customer.PersonalData (Address, Agent, FullName, PhoneNumber)
+import TheUnit.Model.Relationships.CustomerId (CustomerId)
 
 data IndividualApplication = IndividualApplication
   { -- | SSN of the individual (numbers only). Either an SSN or a passport number is required.
@@ -185,7 +185,7 @@ data IndividualApplicationApproved = IndividualApplicationApproved
   { applicationId :: !T.Text,
     -- | @customer: created Customer in Unit
     --   customer required for create new account
-    customer :: !IndividualCustomerId
+    customer :: !CustomerId
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)

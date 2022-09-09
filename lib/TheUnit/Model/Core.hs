@@ -1,6 +1,6 @@
 module TheUnit.Model.Core where
 
-import Data.Aeson ((.:))
+import Data.Aeson ((.:), (.:?))
 import qualified Data.Aeson as J
 import qualified Data.Aeson.Types as J
 import qualified Data.Text as T
@@ -17,3 +17,8 @@ _omitNulls = J.object . P.filter notNull
 (.->) parser key = do
   obj <- parser
   obj .: key
+
+(.->?) :: J.FromJSON a => J.Parser J.Object -> T.Text -> J.Parser (Maybe a)
+(.->?) parser key = do
+  obj <- parser
+  obj .:? key

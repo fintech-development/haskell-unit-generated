@@ -22,6 +22,7 @@ library
       TheUnit.API
       TheUnit.API.Accounts.CreateDepositAccount
       TheUnit.API.Application.CreateIndividualApplication
+      TheUnit.API.BookPayment.CreateBookPayment
       TheUnit.Model
       TheUnit.Model.Accounts
       TheUnit.Model.Accounts.DepositAccount
@@ -33,10 +34,17 @@ library
       TheUnit.Model.Common
       TheUnit.Model.Core
       TheUnit.Model.Customer
-      TheUnit.Model.Customer.IndividualCustomer
       TheUnit.Model.Customer.PersonalData
       TheUnit.Model.Orphans
       TheUnit.Model.Orphans.Date
+      TheUnit.Model.Payment
+      TheUnit.Model.Payment.BookPayment
+      TheUnit.Model.Payment.PaymentStatus
+      TheUnit.Model.Relationships
+      TheUnit.Model.Relationships.AccountId
+      TheUnit.Model.Relationships.CustomerId
+      TheUnit.Model.Relationships.RelationshipsObject
+      TheUnit.Model.Relationships.TransactionId
       TheUnit.Model.Response
   other-modules:
       Paths_haskell_unit_generated
@@ -119,16 +127,16 @@ test-suite haskell-unit-generated-test
   main-is: Spec.hs
   other-modules:
       Aeson
-      Aeson.Application
-      Aeson.DepositAccount
       Fixtures
       Fixtures.Client
+      Fixtures.Client.Cache
       Fixtures.GoldenFile
       Fixtures.Helpers
       Fixtures.VerifyJSON
       Integration
       Integration.CreateDepositAccount
       Integration.CreateIndividualApplication
+      Integration.Payments
       Paths_haskell_unit_generated
   hs-source-dirs:
       test
@@ -203,6 +211,7 @@ test-suite haskell-unit-generated-test
     , parsec
     , random >=1.1
     , safe-exceptions <0.2
+    , stm
     , text >=0.11 && <1.3
     , time >=1.5
     , transformers >=0.4.0.0

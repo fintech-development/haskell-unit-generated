@@ -1,0 +1,44 @@
+{
+  "data": {
+    "type": "bookPayment",
+    "id": "742617",
+    "attributes": {
+      "createdAt": "2022-09-09T15:42:02.982Z",
+      "amount": 200,
+      "description": "Book payment",
+      "status": "Sent"
+    },
+    "relationships": {
+      "account": {
+        "data": {
+          "type": "account",
+          "id": "716913"
+        }
+      },
+      "customer": {
+        "data": {
+          "type": "customer",
+          "id": "515994"
+        }
+      },
+      "counterpartyAccount": {
+        "data": {
+          "type": "account",
+          "id": "717308"
+        }
+      },
+      "counterpartyCustomer": {
+        "data": {
+          "type": "customer",
+          "id": "516239"
+        }
+      },
+      "transaction": {
+        "data": {
+          "type": "transaction",
+          "id": "1742637"
+        }
+      }
+    }
+  }
+}

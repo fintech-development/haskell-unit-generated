@@ -4,6 +4,7 @@ import Data.Foldable (traverse_)
 import qualified Fixtures.Client as Fixtures
 import qualified Integration.CreateDepositAccount as CreateDepositAccount
 import qualified Integration.CreateIndividualApplication as CreateIndividualApplication
+import qualified Integration.Payments as Payments
 import LoadEnv (loadEnv)
 import LoadEnv.Parse (parseEnvironment)
 import System.Environment (setEnv)
@@ -22,3 +23,4 @@ spec =
     beforeAll (updateEnv >> Fixtures.makeAPI) do
       CreateIndividualApplication.spec
       CreateDepositAccount.spec
+      Payments.spec

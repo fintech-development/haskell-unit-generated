@@ -122,4 +122,5 @@ tests:
       - parsec
       - load-env
       - uuid
+      - stm
 

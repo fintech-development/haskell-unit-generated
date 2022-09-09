@@ -2,6 +2,7 @@ module Fixtures.GoldenFile
   ( GoldenFile (..),
     IndividualApplicationFiles (..),
     DepositAccountFiles (..),
+    PaymentsFiles (..),
     goldenFile,
     goldenIndividualApplicationRequest,
   )
@@ -19,10 +20,12 @@ import qualified TheUnit.Model as Model
 data GoldenFile
   = IndividualApplication IndividualApplicationFiles
   | DepositAccount DepositAccountFiles
+  | Payments PaymentsFiles
 
 instance Show GoldenFile where
   show (IndividualApplication file) = intercalate "/" ["individualApplication", show file]
   show (DepositAccount file) = intercalate "/" ["depositAccount", show file]
+  show (Payments file) = intercalate "/" ["payment", show file]
 
 data IndividualApplicationFiles
   = File'Request
@@ -49,6 +52,12 @@ data DepositAccountFiles
 instance Show DepositAccountFiles where
   show File'CreateDepositAccountData = "CreateDepositAccountData.json"
   show File'DepositAccount = "DepositAccount.json"
+
+data PaymentsFiles
+  = File'BookPayment
+
+instance Show PaymentsFiles where
+  show File'BookPayment = "BookPayment.json"
 
 goldenFilePath :: T.Text
 goldenFilePath = T.intercalate "/" ["./test", "Fixtures", "goldenfiles"]

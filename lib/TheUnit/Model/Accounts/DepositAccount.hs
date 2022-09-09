@@ -14,20 +14,20 @@ import Network.Integrated.HTTP.Core (DateTime)
 import TheUnit.Model.Accounts.UnitDepositProduct (UnitDepositProduct)
 import TheUnit.Model.Common (Tags)
 import TheUnit.Model.Core ((.->), _omitNulls)
-import TheUnit.Model.Customer.IndividualCustomer (IndividualCustomerId)
 import TheUnit.Model.Orphans ()
+import TheUnit.Model.Relationships.CustomerId (CustomerId)
 
 -- | [depositAccount](https://docs.unit.co/resources#depositaccount)
 data UnitDepositAccount = UnitDepositAccount
   { -- | Identifier of the deposit account resource.
-    depositAccountId :: !T.Text,
+    accountId :: !T.Text,
     --
 
     -- | The customer.
     -- (@asimuskov) Now support only one customer on account
     -- but Unit can support multiple customers
     -- SEE: [depositoryAccount relationships](https://docs.unit.co/resources#relationships-8)
-    customer :: !IndividualCustomerId,
+    customer :: !CustomerId,
     --
 
     -- | The date the resource was created. RFC3339 Date string
@@ -75,7 +75,7 @@ data UnitDepositAccount = UnitDepositAccount
 instance J.FromJSON UnitDepositAccount where
   parseJSON = J.withObject "UnitDepositAccount" \o -> do
     "depositAccount" :: T.Text <- o .: "type"
-    depositAccountId <- o .: "id"
+    accountId <- o .: "id"
     customer <- o .: "relationships" .-> "customer"
 
     attributes <- o .: "attributes"
@@ -123,7 +123,7 @@ instance J.ToJSON UnitDepositAccount where
             ]
      in _omitNulls
           [ "type" .= ("depositAccount" :: T.Text),
-            "id" .= depositAccountId,
+            "id" .= accountId,
             "attributes" .= attributes,
             "relationships" .= _omitNulls ["customer" .= J.toJSON customer]
           ]
@@ -153,7 +153,7 @@ data UnitDepositAccountStatus
           UnitDepositAccountStatus
 
 data CreateDepositAccountData = CreateDepositAccountData
-  { customer :: !IndividualCustomerId,
+  { customer :: !CustomerId,
     depositProduct :: !UnitDepositProduct,
     idempotencyKey :: !T.Text,
     tags :: !(Maybe Tags)
