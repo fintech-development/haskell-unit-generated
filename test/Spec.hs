@@ -6,4 +6,5 @@ main :: IO ()
 main =
   hspec do
     Aeson.spec
-    Integration.spec
+
+-- Integration.spec

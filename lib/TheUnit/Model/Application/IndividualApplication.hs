@@ -194,28 +194,28 @@ data IndividualApplicationApproved = IndividualApplicationApproved
 -- full description of response see:
 --  - [IndividualApplication](https://docs.unit.co/resources/#individualapplication)
 --  - [Applications](https://docs.unit.co/applications/#response)
-data IndividualApplicationAwaitingDocuments = IndividualApplicationAwaitingDocuments
-  { applicationId :: !T.Text
+newtype IndividualApplicationAwaitingDocuments = IndividualApplicationAwaitingDocuments
+  { applicationId :: T.Text
   -- TODO(@asimuskov): add documents from included
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
 
-data IndividualApplicationPending = IndividualApplicationPending
+newtype IndividualApplicationPending = IndividualApplicationPending
   { -- | The application is being evaluated asynchronously and a result should be available shortly. Listen for webhooks (application.denied, customer.created and application.awaitingdocuments) for the final result, or periodically query the application with Get by Id).
-    applicationId :: !T.Text
+    applicationId :: T.Text
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
 
-data IndividualApplicationDenied = IndividualApplicationDenied
-  { applicationId :: !T.Text
+newtype IndividualApplicationDenied = IndividualApplicationDenied
+  { applicationId :: T.Text
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
 
-data IndividualApplicationCanceled = IndividualApplicationCanceled
-  { applicationId :: !T.Text
+newtype IndividualApplicationCanceled = IndividualApplicationCanceled
+  { applicationId :: T.Text
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)

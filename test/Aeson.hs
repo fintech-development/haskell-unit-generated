@@ -20,7 +20,7 @@ import TheUnit.Model
     UnitEnvelope,
     UnitResponse (..),
   )
-import qualified TheUnit.Model.Payment.BookPayment as Payment
+import qualified TheUnit.Model.Payment as Payment
 import TheUnit.Model.Relationships
 
 spec :: Spec
@@ -80,3 +80,13 @@ payments :: Spec
 payments = do
   it "BookPayment" do
     verifyJSON @(UnitEnvelope Payment.BookPayment) (Payments File'BookPayment)
+  it "ACHCreditPayment" do
+    verifyJSON @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHCreditPayment)
+  it "ACHDebitPayment" do
+    verifyJSON @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHDebitPayment)
+  it "CreateInlinePaymentRequest" do
+    verifyJSON @(UnitEnvelope Payment.CreateInlinePaymentRequest) (Payments File'CreateInlinePaymentRequest)
+  it "CreateLinkedPaymentRequest" do
+    verifyJSON @(UnitEnvelope Payment.CreateLinkedPaymentRequest) (Payments File'CreateLinkedPaymentRequest)
+  it "CreateVerifiedPaymentRequest" do
+    verifyJSON @(UnitEnvelope Payment.CreateVerifiedPaymentRequest) (Payments File'CreateVerifiedPaymentRequest)

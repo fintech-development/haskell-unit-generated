@@ -1,0 +1,37 @@
+{
+  "data": {
+    "type": "achPayment",
+    "id": "795579",
+    "attributes": {
+      "createdAt": "2022-09-13T21:02:56.785Z",
+      "amount": 700,
+      "direction": "Debit",
+      "description": "Testing #7",
+      "addenda": "Some very long description of the payment",
+      "counterparty": {
+        "name": "Alberta Bobbeth Charleson",
+        "routingNumber": "329757050",
+        "accountNumber": "717054489",
+        "accountType": "Checking"
+      },
+      "status": "Pending",
+      "settlementDate": "2022-09-16",
+      "counterpartyVerificationMethod": "Plaid",
+      "sameDay": false
+    },
+    "relationships": {
+      "account": {
+        "data": {
+          "type": "depositAccount",
+          "id": "716913"
+        }
+      },
+      "customer": {
+        "data": {
+          "type": "customer",
+          "id": "515994"
+        }
+      }
+    }
+  }
+}

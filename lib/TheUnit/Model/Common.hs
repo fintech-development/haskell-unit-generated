@@ -2,11 +2,13 @@
 
 module TheUnit.Model.Common where
 
+import Data.Aeson ((.:), (.=))
 import qualified Data.Aeson as J
 import qualified Data.Map.Strict as Map
 import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
+import Network.Integrated.HTTP.Core (_omitNulls)
 
 -- SEE: more generated types here:
 -- - https://github.com/unit-finance/unit-node-sdk/blob/main/types/common.ts
@@ -52,3 +54,27 @@ data DeviceFingerprint = DeviceFingerprint
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
 type Tags = Map.Map T.Text T.Text
+
+data UnitJSONObject = UnitJSONObject
+  { typeName :: !T.Text,
+    objId :: !T.Text,
+    attributes :: J.Value,
+    relationships :: J.Value
+  }
+
+instance J.ToJSON UnitJSONObject where
+  toJSON UnitJSONObject {..} =
+    _omitNulls
+      [ "id" .= objId,
+        "type" .= typeName,
+        "attributes" .= attributes,
+        "relationships" .= relationships
+      ]
+
+instance J.FromJSON UnitJSONObject where
+  parseJSON = J.withObject "UnitJSONObject" \o -> do
+    objId <- o .: "id"
+    typeName <- o .: "type"
+    attributes <- o .: "attributes"
+    relationships <- o .: "relationships"
+    pure $ UnitJSONObject {..}

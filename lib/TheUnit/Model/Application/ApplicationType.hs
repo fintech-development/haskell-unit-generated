@@ -20,7 +20,7 @@ data ApplicationType
 
 instance J.ToJSON ApplicationType where toJSON = J.toJSON . fromE'Type
 
-instance J.FromJSON ApplicationType where parseJSON o = either fail (pure . id) . toE'Type =<< J.parseJSON o
+instance J.FromJSON ApplicationType where parseJSON o = either fail pure . toE'Type =<< J.parseJSON o
 
 instance WH.ToHttpApiData ApplicationType where toQueryParam = WH.toQueryParam . fromE'Type
 

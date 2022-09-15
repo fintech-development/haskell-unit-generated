@@ -55,9 +55,19 @@ instance Show DepositAccountFiles where
 
 data PaymentsFiles
   = File'BookPayment
+  | File'ACHCreditPayment
+  | File'ACHDebitPayment
+  | File'CreateInlinePaymentRequest
+  | File'CreateLinkedPaymentRequest
+  | File'CreateVerifiedPaymentRequest
 
 instance Show PaymentsFiles where
   show File'BookPayment = "BookPayment.json"
+  show File'ACHCreditPayment = "ACHCreditPayment.json"
+  show File'ACHDebitPayment = "ACHDebitPayment.json"
+  show File'CreateInlinePaymentRequest = "CreateInlinePaymentRequest.json"
+  show File'CreateLinkedPaymentRequest = "CreateLinkedPaymentRequest.json"
+  show File'CreateVerifiedPaymentRequest = "CreateVerifiedPaymentRequest.json"
 
 goldenFilePath :: T.Text
 goldenFilePath = T.intercalate "/" ["./test", "Fixtures", "goldenfiles"]
@@ -66,7 +76,7 @@ goldenFile :: GoldenFile -> IO BL.ByteString
 goldenFile file =
   let filePath = T.pack $ show file
       goldenPath = T.intercalate "/" [goldenFilePath, filePath]
-   in BL.readFile $ T.unpack $ goldenPath
+   in BL.readFile $ T.unpack goldenPath
 
 goldenIndividualApplicationRequest :: IO Model.CreateIndividualApplicationRequest
 goldenIndividualApplicationRequest = do

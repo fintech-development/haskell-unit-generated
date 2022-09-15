@@ -1,0 +1,20 @@
+{
+  "data": {
+    "type": "achPayment",
+    "attributes": {
+      "idempotencyKey": "GoldenFile-CreateVerifiedPaymentRequest.json",
+      "amount": 10000,
+      "direction": "Debit",
+      "plaidProcessorToken": "processor-5a62q307-ww0a-6737-f6db-pole26004556",
+      "description": "Funding"
+    },
+    "relationships": {
+      "account": {
+        "data": {
+          "type": "depositAccount",
+          "id": "555"
+        }
+      }
+    }
+  }
+}

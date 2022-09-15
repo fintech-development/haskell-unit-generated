@@ -16,7 +16,7 @@ data Direction
   deriving
     (J.ToJSON, J.FromJSON)
     via GenericEncoded
-          '[ConstructorTagModifier := DropPrefix "PaymentStatus'"]
+          '[ConstructorTagModifier := DropPrefix "Direction'"]
           Direction
 
 -- | Payment Status

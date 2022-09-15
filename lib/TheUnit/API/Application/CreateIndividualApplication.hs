@@ -35,4 +35,4 @@ createIndividualApplication ::
 createIndividualApplication requestData =
   Core._mkRequest "POST" ["/applications"]
     `Core._hasAuthType` (P.Proxy :: P.Proxy Auth20BearerToken)
-    `Core.setBodyParam` (UnitEnvelope requestData)
+    `Core.setBodyParam` UnitEnvelope requestData

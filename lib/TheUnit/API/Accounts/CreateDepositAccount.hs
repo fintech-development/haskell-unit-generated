@@ -33,4 +33,4 @@ createDepositAccount ::
 createDepositAccount requestData =
   Core._mkRequest "POST" ["/accounts"]
     `Core._hasAuthType` (P.Proxy :: P.Proxy Auth20BearerToken)
-    `Core.setBodyParam` (UnitEnvelope requestData)
+    `Core.setBodyParam` UnitEnvelope requestData

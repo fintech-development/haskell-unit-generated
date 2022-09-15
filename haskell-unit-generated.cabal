@@ -21,6 +21,7 @@ library
       TheUnit
       TheUnit.API
       TheUnit.API.Accounts.CreateDepositAccount
+      TheUnit.API.ACHPayment.CreateACHPayment
       TheUnit.API.Application.CreateIndividualApplication
       TheUnit.API.BookPayment.CreateBookPayment
       TheUnit.Model
@@ -38,11 +39,14 @@ library
       TheUnit.Model.Orphans
       TheUnit.Model.Orphans.Date
       TheUnit.Model.Payment
+      TheUnit.Model.Payment.ACHPayment
       TheUnit.Model.Payment.BookPayment
       TheUnit.Model.Payment.PaymentStatus
       TheUnit.Model.Relationships
       TheUnit.Model.Relationships.AccountId
+      TheUnit.Model.Relationships.CounterpartyId
       TheUnit.Model.Relationships.CustomerId
+      TheUnit.Model.Relationships.RecurringPaymentId
       TheUnit.Model.Relationships.RelationshipsObject
       TheUnit.Model.Relationships.TransactionId
       TheUnit.Model.Response

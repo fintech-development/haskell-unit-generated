@@ -1,0 +1,25 @@
+{
+  "data": {
+    "type": "achPayment",
+    "attributes": {
+      "idempotencyKey": "GoldenFile-CreateInlinePaymentRequest.json",
+      "amount": 10000,
+      "direction": "Credit",
+      "counterparty": {
+        "routingNumber": "812345673",
+        "accountNumber": "12345569",
+        "accountType": "Checking",
+        "name": "Jane Doe"
+      },
+      "description": "Funding"
+    },
+    "relationships": {
+      "account": {
+        "data": {
+          "type": "depositAccount",
+          "id": "555"
+        }
+      }
+    }
+  }
+}

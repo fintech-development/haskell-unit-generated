@@ -1,8 +1,9 @@
 module TheUnit.Model.Core where
 
-import Data.Aeson ((.:), (.:?))
+import Data.Aeson (Value (Object), (.:), (.:?))
 import qualified Data.Aeson as J
 import qualified Data.Aeson.Types as J
+import qualified Data.HashMap.Lazy as HML
 import qualified Data.Text as T
 import Prelude as P
 
@@ -22,3 +23,9 @@ _omitNulls = J.object . P.filter notNull
 (.->?) parser key = do
   obj <- parser
   obj .:? key
+
+mergeAesonObjects :: [Value] -> Value
+mergeAesonObjects = Object . HML.unions . map unObject
+  where
+    unObject (Object o) = o
+    unObject _ = error "mergeAesonObjects support only JSON objects"

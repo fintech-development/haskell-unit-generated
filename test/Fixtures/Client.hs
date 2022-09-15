@@ -43,9 +43,9 @@ makeAPI = do
   token <- encode <$> Env.getEnv "UNIT_ORG_AUTH_TOKEN"
   host <- encodeL <$> Env.getEnv "UNIT_API_HOST"
   cfg <- Core.newConfig host <&> setAuth token
-  __cache <- Cache.initCache
 
   manager <- HTTP.newTlsManager
+  __cache <- Cache.initCache
   let createIndividualApplication =
         Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createIndividualApplication
   let createDepositAccount =
@@ -85,7 +85,7 @@ withCustomer :: UnitAPI -> (CustomerId -> IO a) -> IO a
 withCustomer unitAPI@UnitAPI {__cache} action = do
   mbCustomer <- Cache.getCustomer __cache
   case mbCustomer of
-    Just c -> action c `finally` (Cache.putCustomer __cache c)
+    Just c -> action c `finally` Cache.putCustomer __cache c
     Nothing -> do
       newCustomerId <- _approveApplication unitAPI
       Cache.putCustomer __cache newCustomerId
@@ -104,7 +104,7 @@ withAccount :: UnitAPI -> (AccountId -> IO a) -> IO a
 withAccount unitAPI@UnitAPI {__cache} action = do
   mbAccount <- Cache.getAccount __cache
   case mbAccount of
-    Just account -> action account `finally` (Cache.putAccount __cache account)
+    Just account -> action account `finally` Cache.putAccount __cache account
     Nothing -> withCustomer unitAPI \customerId -> do
       newAccount <- _createDepositAccount unitAPI customerId
       Cache.putAccount __cache newAccount

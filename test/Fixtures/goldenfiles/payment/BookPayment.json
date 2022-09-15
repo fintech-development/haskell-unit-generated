@@ -11,7 +11,7 @@
     "relationships": {
       "account": {
         "data": {
-          "type": "account",
+          "type": "depositAccount",
           "id": "716913"
         }
       },
@@ -23,7 +23,7 @@
       },
       "counterpartyAccount": {
         "data": {
-          "type": "account",
+          "type": "depositAccount",
           "id": "717308"
         }
       },

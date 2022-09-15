@@ -1,0 +1,42 @@
+{
+  "data": {
+    "type": "achPayment",
+    "id": "794675",
+    "attributes": {
+      "createdAt": "2022-09-13T20:00:06.237Z",
+      "amount": 70,
+      "direction": "Credit",
+      "description": "Testing #6",
+      "addenda": "Some very long description of the payment",
+      "counterparty": {
+        "name": "Unit Finance Inc",
+        "routingNumber": "091311229",
+        "accountNumber": "864800000000",
+        "accountType": "Checking"
+      },
+      "status": "Pending",
+      "expectedCompletionDate": "2022-09-15",
+      "sameDay": false
+    },
+    "relationships": {
+      "account": {
+        "data": {
+          "type": "depositAccount",
+          "id": "716913"
+        }
+      },
+      "customer": {
+        "data": {
+          "type": "customer",
+          "id": "515994"
+        }
+      },
+      "transaction": {
+        "data": {
+          "type": "transaction",
+          "id": "1755210"
+        }
+      }
+    }
+  }
+}

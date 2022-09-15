@@ -5,6 +5,7 @@ import qualified Data.Aeson as J
 import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Network.Integrated.HTTP.Core (_omitNulls)
+import qualified Network.Integrated.HTTP.Core as Time
 import TheUnit.Model.Common (Tags)
 import TheUnit.Model.Payment.PaymentStatus (Direction, PaymentStatus)
 import TheUnit.Model.Relationships (AccountId, CustomerId, TransactionId)
@@ -15,7 +16,7 @@ data BookPayment = BookPayment
     id :: !T.Text,
     -- | Date only. The date the resource was created.
     -- | RFC3339 format. For more information: https://en.wikipedia.org/wiki/ISO_8601#RFCs
-    createdAt :: !T.Text,
+    createdAt :: !Time.DateTime,
     -- | One of Pending, Rejected, Clearing, Sent, Canceled, Returned. See [ACH Status](https://developers.unit.co/#ach-status).
     status :: !PaymentStatus,
     -- | (Optional) More information about the status.
