@@ -36,6 +36,7 @@ library
       TheUnit.Model.Core
       TheUnit.Model.Customer
       TheUnit.Model.Customer.PersonalData
+      TheUnit.Model.Merchant
       TheUnit.Model.Orphans
       TheUnit.Model.Orphans.Date
       TheUnit.Model.Payment
@@ -44,12 +45,19 @@ library
       TheUnit.Model.Payment.PaymentStatus
       TheUnit.Model.Relationships
       TheUnit.Model.Relationships.AccountId
+      TheUnit.Model.Relationships.ApplicationId
+      TheUnit.Model.Relationships.AuthorizationRequestId
+      TheUnit.Model.Relationships.CardId
       TheUnit.Model.Relationships.CounterpartyId
       TheUnit.Model.Relationships.CustomerId
+      TheUnit.Model.Relationships.DocumentId
+      TheUnit.Model.Relationships.PaymentId
       TheUnit.Model.Relationships.RecurringPaymentId
       TheUnit.Model.Relationships.RelationshipsObject
       TheUnit.Model.Relationships.TransactionId
       TheUnit.Model.Response
+      TheUnit.Model.Webhooks.Events
+      TheUnit.Model.Webhooks.Verify
   other-modules:
       Paths_haskell_unit_generated
   hs-source-dirs:
@@ -122,7 +130,6 @@ library
     , time >=1.5
     , transformers >=0.4.0.0
     , unordered-containers
-    , uuid
     , vector >=0.10.9 && <0.13
   default-language: Haskell2010
 

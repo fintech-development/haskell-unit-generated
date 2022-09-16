@@ -47,7 +47,6 @@ dependencies:
 - openapi3
 - aeson-deriving
 - generic-lens
-- uuid
 
 ghc-options:
   - -Wall

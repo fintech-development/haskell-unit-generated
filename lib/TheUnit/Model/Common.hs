@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE StrictData #-}
 
 module TheUnit.Model.Common where
 
@@ -34,9 +35,9 @@ newtype MetaPaginationObject = MetaPaginationObject {pagination :: MetaPaginatio
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
 data MetaPagination = MetaPagination
-  { total :: Int,
-    limit :: Int,
-    offset :: Int
+  { total :: !Int,
+    limit :: !Int,
+    offset :: !Int
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
@@ -78,3 +79,21 @@ instance J.FromJSON UnitJSONObject where
     attributes <- o .: "attributes"
     relationships <- o .: "relationships"
     pure $ UnitJSONObject {..}
+
+-- | HealthcareAmounts
+data HealthcareAmounts = HealthcareAmounts
+  { -- | Dental expense (cents).
+    dentalAmount :: !Int,
+    -- | Transit expense (cents).
+    transitAmount :: !Int,
+    -- | Vision expense (cents).
+    visionOpticalAmount :: !Int,
+    -- | Prescription drugs expense (cents).
+    prescriptionRXAmount :: !Int,
+    -- | Misc medical expense (cents).
+    clinicOtherQualifiedMedicalAmount :: !Int,
+    -- | Total medical expense (cents).
+    totalHealthcareAmount :: !Int
+  }
+  deriving (Show, Eq, Generic)
+  deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)

@@ -1,6 +1,12 @@
 {-# LANGUAGE DeriveAnyClass #-}
 
-module TheUnit.Model.Payment.PaymentStatus (Direction (..), PaymentStatus (..)) where
+module TheUnit.Model.Payment.PaymentStatus
+  ( Direction (..),
+    PaymentStatus (..),
+    RecurringPaymentStatus (..),
+    ReceivedPaymentStatus (..),
+  )
+where
 
 import qualified Data.Aeson as J
 import Data.Aeson.Deriving
@@ -36,3 +42,28 @@ data PaymentStatus
     via GenericEncoded
           '[ConstructorTagModifier := DropPrefix "PaymentStatus'"]
           PaymentStatus
+
+data RecurringPaymentStatus
+  = RecurringPaymentStatus'Active
+  | RecurringPaymentStatus'Completed
+  | RecurringPaymentStatus'Disabled
+  deriving (Show, Eq, Generic)
+  deriving anyclass (OpenApi.ToSchema)
+  deriving
+    (J.ToJSON, J.FromJSON)
+    via GenericEncoded
+          '[ConstructorTagModifier := DropPrefix "RecurringPaymentStatus'"]
+          RecurringPaymentStatus
+
+data ReceivedPaymentStatus
+  = ReceivedPaymentStatus'Pending
+  | ReceivedPaymentStatus'Advanced
+  | ReceivedPaymentStatus'Completed
+  | ReceivedPaymentStatus'Returned
+  deriving (Show, Eq, Generic)
+  deriving anyclass (OpenApi.ToSchema)
+  deriving
+    (J.ToJSON, J.FromJSON)
+    via GenericEncoded
+          '[ConstructorTagModifier := DropPrefix "ReceivedPaymentStatus'"]
+          ReceivedPaymentStatus
