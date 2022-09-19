@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "id": "3000",
+      "type": "application.awaitingDocuments",
+      "attributes": {
+        "createdAt": "2020-07-29T12:53:05.882Z",
+        "tags": {
+          "tag": "value"
+        }
+      },
+      "relationships": {
+        "application": {
+          "data": {
+            "id": "87",
+            "type": "individualApplication"
+          }
+        }
+      }
+    }
+  ]
+}

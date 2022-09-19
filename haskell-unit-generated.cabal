@@ -56,8 +56,10 @@ library
       TheUnit.Model.Relationships.RelationshipsObject
       TheUnit.Model.Relationships.TransactionId
       TheUnit.Model.Response
+      TheUnit.Model.Webhooks
       TheUnit.Model.Webhooks.Events
       TheUnit.Model.Webhooks.Verify
+      TheUnit.Model.Webhooks.WebhookPayload
   other-modules:
       Paths_haskell_unit_generated
   hs-source-dirs:

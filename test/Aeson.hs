@@ -17,11 +17,13 @@ import TheUnit.Model
     IndividualApplicationDenied (..),
     IndividualApplicationPending (..),
     UnitDepositAccount,
-    UnitEnvelope,
+    UnitEnvelope (..),
     UnitResponse (..),
   )
+import qualified TheUnit.Model as Webhooks
 import qualified TheUnit.Model.Payment as Payment
 import TheUnit.Model.Relationships
+import qualified TheUnit.Model.Webhooks as Webhook
 
 spec :: Spec
 spec = do
@@ -31,13 +33,14 @@ spec = do
       applicationResponse
     depositAccount
     payments
+    webhooks
 
 --
 
 applicationRequest :: Spec
 applicationRequest = do
   it "CreateIndividualApplicationRequest" do
-    verifyJSON @(UnitEnvelope CreateIndividualApplicationRequest) $ Fixtures.IndividualApplication File'Request
+    verifyJSON_ @(UnitEnvelope CreateIndividualApplicationRequest) $ Fixtures.IndividualApplication File'Request
 
 applicationResponse :: Spec
 applicationResponse = describe "CreateIndividualApplicationResponse" do
@@ -71,22 +74,40 @@ applicationResponse = describe "CreateIndividualApplicationResponse" do
 depositAccount :: Spec
 depositAccount = do
   it "DepositAccount" do
-    verifyJSON @(UnitEnvelope UnitDepositAccount) (DepositAccount File'DepositAccount)
+    verifyJSON_ @(UnitEnvelope UnitDepositAccount) (DepositAccount File'DepositAccount)
   --
   it "CreateDepositAccountData" do
-    verifyJSON @(UnitEnvelope CreateDepositAccountData) (DepositAccount File'CreateDepositAccountData)
+    verifyJSON_ @(UnitEnvelope CreateDepositAccountData) (DepositAccount File'CreateDepositAccountData)
 
 payments :: Spec
 payments = do
-  it "BookPayment" do
-    verifyJSON @(UnitEnvelope Payment.BookPayment) (Payments File'BookPayment)
-  it "ACHCreditPayment" do
-    verifyJSON @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHCreditPayment)
-  it "ACHDebitPayment" do
-    verifyJSON @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHDebitPayment)
-  it "CreateInlinePaymentRequest" do
-    verifyJSON @(UnitEnvelope Payment.CreateInlinePaymentRequest) (Payments File'CreateInlinePaymentRequest)
-  it "CreateLinkedPaymentRequest" do
-    verifyJSON @(UnitEnvelope Payment.CreateLinkedPaymentRequest) (Payments File'CreateLinkedPaymentRequest)
-  it "CreateVerifiedPaymentRequest" do
-    verifyJSON @(UnitEnvelope Payment.CreateVerifiedPaymentRequest) (Payments File'CreateVerifiedPaymentRequest)
+  describe "Payments" do
+    it "BookPayment" do
+      verifyJSON_ @(UnitEnvelope Payment.BookPayment) (Payments File'BookPayment)
+    it "ACHCreditPayment" do
+      verifyJSON_ @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHCreditPayment)
+    it "ACHDebitPayment" do
+      verifyJSON_ @(UnitEnvelope Payment.ACHPayment) (Payments File'ACHDebitPayment)
+    it "CreateInlinePaymentRequest" do
+      verifyJSON_ @(UnitEnvelope Payment.CreateInlinePaymentRequest) (Payments File'CreateInlinePaymentRequest)
+    it "CreateLinkedPaymentRequest" do
+      verifyJSON_ @(UnitEnvelope Payment.CreateLinkedPaymentRequest) (Payments File'CreateLinkedPaymentRequest)
+    it "CreateVerifiedPaymentRequest" do
+      verifyJSON_ @(UnitEnvelope Payment.CreateVerifiedPaymentRequest) (Payments File'CreateVerifiedPaymentRequest)
+
+webhooks :: Spec
+webhooks = do
+  describe "Webhooks" do
+    it "AccountCreated" do
+      UnitEnvelope {payload = [accountCreated]} <- verifyJSON @(UnitEnvelope [Webhook.UnitWebhook]) (Webhooks File'AccountCreated)
+      Webhooks.webhookEvent accountCreated `shouldBe` Webhooks.UnitEvent'AccountCreated
+
+    --
+    it "ApplicationAwaitingDocuments" do
+      UnitEnvelope {payload = [webhook]} <- verifyJSON @(UnitEnvelope [Webhook.UnitWebhook]) (Webhooks File'ApplicationAwaitingDocuments)
+      Webhooks.webhookEvent webhook `shouldBe` Webhooks.UnitEvent'ApplicationAwaitingDocuments
+
+    --
+    it "ReceivedPaymentCreated" do
+      UnitEnvelope {payload = [webhook]} <- verifyJSON @(UnitEnvelope [Webhook.UnitWebhook]) (Webhooks File'ReceivedPaymentCreated)
+      Webhooks.webhookEvent webhook `shouldBe` Webhooks.UnitEvent'ReceivedPaymentCreated

@@ -24,7 +24,7 @@ instance (J.FromJSON a) => J.FromJSON (UnitEnvelope a) where
 
 -- | ToJSON UnitResponse
 instance (J.ToJSON a) => J.ToJSON (UnitEnvelope a) where
-  toJSON (UnitEnvelope {payload}) =
+  toJSON UnitEnvelope {payload} =
     J.object ["data" .= payload]
 
 -- | ToSchema UnitResponse
