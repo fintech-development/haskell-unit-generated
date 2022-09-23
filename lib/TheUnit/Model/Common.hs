@@ -10,6 +10,7 @@ import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Network.Integrated.HTTP.Core (_omitNulls)
+import TheUnit.Model.Orphans ()
 
 -- SEE: more generated types here:
 -- - https://github.com/unit-finance/unit-node-sdk/blob/main/types/common.ts
@@ -54,13 +55,14 @@ data DeviceFingerprint = DeviceFingerprint
   deriving (Show, Eq, Generic)
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
-type Tags = Map.Map T.Text T.Text
+-- | Special tags, support kev-value map, where key is always String and value is JSON primitive: number|string|boolean
+type Tags = Map.Map T.Text J.Value
 
 data UnitJSONObject = UnitJSONObject
   { typeName :: !T.Text,
     objId :: !T.Text,
-    attributes :: J.Value,
-    relationships :: J.Value
+    attributes :: !J.Value,
+    relationships :: !J.Value
   }
 
 instance J.ToJSON UnitJSONObject where

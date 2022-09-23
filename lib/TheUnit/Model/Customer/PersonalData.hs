@@ -8,7 +8,7 @@ import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Network.Integrated.HTTP.Core (Date)
-import TheUnit.Model.Orphans.Date ()
+import TheUnit.Model.Orphans ()
 
 data FullName = FullName
   { -- | 	Individual first name.
