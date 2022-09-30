@@ -7,13 +7,13 @@ packages:
 - completed:
     name: haskell-client-generated
     pantry-tree:
-      sha256: fbfc15c25287acaa3c573108ba1d9edff332027a86b066dac8ac9112275a2f31
+      sha256: 9ef0a69d68f6b96f4f29798dbc33914513724f5dda57896398dcf1055463b75a
       size: 1022
-    commit: 94bcd90f651175381221bd175b2d2007283bf261
+    commit: ba0e7017f6d9baadf1a4efc81884858f8341430f
     git: https://github.com/fintech-development/haskell-client-generated.git
     version: 0.1.0.0
   original:
-    commit: 94bcd90f651175381221bd175b2d2007283bf261
+    commit: ba0e7017f6d9baadf1a4efc81884858f8341430f
     git: https://github.com/fintech-development/haskell-client-generated.git
 - completed:
     pantry-tree:

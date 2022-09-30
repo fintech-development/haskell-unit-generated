@@ -1,19 +1,18 @@
-{-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-
-module Integration.CreateIndividualApplication (spec) where
+module Integration.IndividualApplication (spec) where
 
 import Data.Generics.Labels ()
 import Fixtures.Client (UnitAPI (..))
 import Fixtures.GoldenFile (goldenIndividualApplicationRequest)
-import Lens.Micro ((&), (.~))
-import Test.Hspec (SpecWith, describe, it)
+import Lens.Micro ((&), (.~), (^.))
+import Test.Hspec (SpecWith, describe, it, shouldBe)
 import TheUnit.Model.Application.IndividualApplication
-  ( CreateIndividualApplicationResponse (..),
+  ( IndividualApplicationResponse (..),
+    _applicationId,
   )
 import TheUnit.Model.Response (UnitResponse (UnitResponseData))
 
 spec :: SpecWith UnitAPI
-spec =
+spec = do
   describe "API: CreateIndividualApplication" do
     --
     it "Approve" \UnitAPI {createIndividualApplication} -> do
@@ -21,7 +20,7 @@ spec =
       resp <- createIndividualApplication fc
       case resp of
         Left e -> error $ "Got HTTP error: " <> show e
-        Right (UnitResponseData (CreateIndividualApplicationResponse'Approved _)) -> pure () -- success
+        Right (UnitResponseData (IndividualApplicationResponse'Approved _)) -> pure () -- success
         Right r -> error $ "Expect application approve, but got: " <> show r
     --
     -- https://docs.unit.co/applications#testing-applications
@@ -33,7 +32,7 @@ spec =
       resp <- createIndividualApplication deniedRequest
       case resp of
         Left e -> error $ "Got HTTP error: " <> show e
-        Right (UnitResponseData (CreateIndividualApplicationResponse'Denied _)) -> pure () -- success
+        Right (UnitResponseData (IndividualApplicationResponse'Denied _)) -> pure () -- success
         Right r -> error $ "Expect application Denied, but got: " <> show r
     --
     it "PendingReview" \UnitAPI {createIndividualApplication} -> do
@@ -43,7 +42,7 @@ spec =
       resp <- createIndividualApplication pendingRequest
       case resp of
         Left e -> error $ "Got HTTP error: " <> show e
-        Right (UnitResponseData (CreateIndividualApplicationResponse'PendingReview _)) -> pure () -- success
+        Right (UnitResponseData (IndividualApplicationResponse'PendingReview _)) -> pure () -- success
         Right r -> error $ "Expect application Denied, but got: " <> show r
     --
     it "AwaitingDocuments" \UnitAPI {createIndividualApplication} -> do
@@ -56,5 +55,16 @@ spec =
       resp <- createIndividualApplication documentsRequest
       case resp of
         Left e -> error $ "Got HTTP error: " <> show e
-        Right (UnitResponseData (CreateIndividualApplicationResponse'AwaitingDocuments _)) -> pure () -- success
+        Right (UnitResponseData (IndividualApplicationResponse'AwaitingDocuments _)) -> pure () -- success
+        Right r -> error $ "Expect application Denied, but got: " <> show r
+  ---
+  --
+  describe "API: GetIndividualApplication" do
+    it "get-by-id" \UnitAPI {createIndividualApplication', getIndividualApplicationById} -> do
+      fc <- goldenIndividualApplicationRequest
+      application <- createIndividualApplication' fc
+      resp <- getIndividualApplicationById (application ^. _applicationId)
+      case resp of
+        Left e -> error $ "Got HTTP error: " <> show e
+        Right (UnitResponseData application') -> application' `shouldBe` application
         Right r -> error $ "Expect application Denied, but got: " <> show r

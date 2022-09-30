@@ -1,4 +1,10 @@
-module Fixtures.Client (makeAPI, UnitAPI (..), withCustomer, withAccount) where
+module Fixtures.Client
+  ( makeAPI,
+    UnitAPI (..),
+    withCustomer,
+    withAccount,
+  )
+where
 
 import Control.Exception.Safe (finally)
 import qualified Data.ByteString as BS
@@ -18,16 +24,16 @@ import Network.Integrated.HTTP.DispatchClient (makeDispatchClient)
 import qualified Network.Integrated.HTTP.DispatchClient as Dispatch
 import qualified System.Environment as Env
 import qualified TheUnit.API as API
-import qualified TheUnit.API.BookPayment.CreateBookPayment as API
 import qualified TheUnit.Model as Model
 import TheUnit.Model.Relationships (AccountId (AccountId), CustomerId)
 
 type APIResponse a = IO (Either MimeError (Model.UnitResponse a))
 
 data UnitAPI = UnitAPI
-  { createIndividualApplication :: Model.CreateIndividualApplicationRequest -> APIResponse Model.CreateIndividualApplicationResponse,
+  { createIndividualApplication :: Model.CreateIndividualApplicationRequest -> APIResponse Model.IndividualApplicationResponse,
     -- | strict version of `createIndividualApplication`
-    createIndividualApplication' :: Model.CreateIndividualApplicationRequest -> IO Model.CreateIndividualApplicationResponse,
+    createIndividualApplication' :: Model.CreateIndividualApplicationRequest -> IO Model.IndividualApplicationResponse,
+    getIndividualApplicationById :: T.Text -> APIResponse Model.IndividualApplicationResponse,
     --
     createDepositAccount :: Model.CreateDepositAccountData -> APIResponse Model.UnitDepositAccount,
     -- | strict version of `createDepositAccount
@@ -48,6 +54,10 @@ makeAPI = do
   __cache <- Cache.initCache
   let createIndividualApplication =
         Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createIndividualApplication
+
+  let getIndividualApplicationById =
+        Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.getIndividualApplicationById
+
   let createDepositAccount =
         Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createDepositAccount
   let createBookPayment =
@@ -57,6 +67,7 @@ makeAPI = do
     UnitAPI
       { createIndividualApplication,
         createIndividualApplication' = fmap handleResponse . createIndividualApplication,
+        getIndividualApplicationById,
         createDepositAccount,
         createDepositAccount' = fmap handleResponse . createDepositAccount,
         createBookPayment,
@@ -97,7 +108,7 @@ _approveApplication UnitAPI {createIndividualApplication} = do
   resp <- createIndividualApplication fc
   case resp of
     Left e -> error $ "Got HTTP error: " <> show e
-    Right (Model.UnitResponseData (Model.CreateIndividualApplicationResponse'Approved res)) -> pure $ res ^. #customer
+    Right (Model.UnitResponseData (Model.IndividualApplicationResponse'Approved res)) -> pure $ res ^. #customer
     Right r -> error $ "Expect application approve, but got: " <> show r
 
 withAccount :: UnitAPI -> (AccountId -> IO a) -> IO a

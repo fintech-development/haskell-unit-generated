@@ -5,9 +5,11 @@ module TheUnit.Model.Application.IndividualApplication where
 import Control.Applicative ((<|>))
 import Data.Aeson ((.:), (.:?), (.=))
 import qualified Data.Aeson as J
+import Data.Functor.Const (Const (..))
 import qualified Data.OpenApi as OpenApi
 import qualified Data.Text as T
 import GHC.Generics (Generic)
+import qualified Lens.Micro as Lens
 import qualified TheUnit.Model.Application.ApplicationStatus as ApplicationStatus
 import TheUnit.Model.Application.ApplicationType (ApplicationType (..))
 import TheUnit.Model.Common (DeviceFingerprint, Tags)
@@ -116,22 +118,22 @@ instance J.FromJSON CreateIndividualApplicationRequest where
 
 -- | Response from @/applications@
 -- [Applications](https://docs.unit.co/applications/#response)
-data CreateIndividualApplicationResponse
+data IndividualApplicationResponse
   = -- | Application was Approved
-    CreateIndividualApplicationResponse'Approved IndividualApplicationApproved
+    IndividualApplicationResponse'Approved IndividualApplicationApproved
   | -- | The application was denied. A Customer resource will not be created.
-    CreateIndividualApplicationResponse'Denied IndividualApplicationDenied
+    IndividualApplicationResponse'Denied IndividualApplicationDenied
   | -- | The application was сanceled. A Customer resource will not be created.
-    CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled
+    IndividualApplicationResponse'Canceled IndividualApplicationCanceled
   | -- | Certain documents are required for the process to continue. You may upload them via Upload Document.
-    CreateIndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments
-  | CreateIndividualApplicationResponse'PendingReview IndividualApplicationPending
+    IndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments
+  | IndividualApplicationResponse'PendingReview IndividualApplicationPending
   | -- | The application is being evaluated asynchronously and a result should be available shortly. Listen for webhooks (application.denied, customer.created and application.awaitingdocuments) for the final result, or periodically query the application with Get by Id).
-    CreateIndividualApplicationResponse'Pending IndividualApplicationPending
+    IndividualApplicationResponse'Pending IndividualApplicationPending
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
 
-instance J.FromJSON CreateIndividualApplicationResponse where
+instance J.FromJSON IndividualApplicationResponse where
   parseJSON = J.withObject "CreateIndividualApplicationResponse" \o ->
     do
       ApplicationType'IndividualApplication <- o .: "type"
@@ -148,32 +150,32 @@ instance J.FromJSON CreateIndividualApplicationResponse where
         applicationId <- o .: "id"
         customer <- o .: "relationships" .-> "customer"
         let approvedResult = IndividualApplicationApproved {..}
-        pure $ CreateIndividualApplicationResponse'Approved approvedResult
+        pure $ IndividualApplicationResponse'Approved approvedResult
 
       awaitingDocuments o = do
         ApplicationStatus.AwaitingDocuments <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        pure $ CreateIndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {..}
+        pure $ IndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {..}
 
       pendingReview o = do
         ApplicationStatus.PendingReview <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        pure $ CreateIndividualApplicationResponse'PendingReview IndividualApplicationPending {..}
+        pure $ IndividualApplicationResponse'PendingReview IndividualApplicationPending {..}
 
       pending o = do
         ApplicationStatus.Pending <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        pure $ CreateIndividualApplicationResponse'Pending IndividualApplicationPending {..}
+        pure $ IndividualApplicationResponse'Pending IndividualApplicationPending {..}
 
       denied o = do
         ApplicationStatus.Denied <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        pure $ CreateIndividualApplicationResponse'Denied IndividualApplicationDenied {..}
+        pure $ IndividualApplicationResponse'Denied IndividualApplicationDenied {..}
 
       canceled o = do
         ApplicationStatus.Canceled <- o .: "attributes" .-> "status"
         applicationId <- o .: "id"
-        pure $ CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled {..}
+        pure $ IndividualApplicationResponse'Canceled IndividualApplicationCanceled {..}
 
 --
 
@@ -219,3 +221,13 @@ newtype IndividualApplicationCanceled = IndividualApplicationCanceled
   }
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
+
+_applicationId :: Lens.SimpleGetter IndividualApplicationResponse T.Text
+_applicationId f =
+  Const . getConst . f . \case
+    IndividualApplicationResponse'Approved IndividualApplicationApproved {applicationId} -> applicationId
+    IndividualApplicationResponse'Denied IndividualApplicationDenied {applicationId} -> applicationId
+    IndividualApplicationResponse'Canceled IndividualApplicationCanceled {applicationId} -> applicationId
+    IndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {applicationId} -> applicationId
+    IndividualApplicationResponse'PendingReview IndividualApplicationPending {applicationId} -> applicationId
+    IndividualApplicationResponse'Pending IndividualApplicationPending {applicationId} -> applicationId

@@ -3,7 +3,7 @@ module Integration (spec) where
 import Data.Foldable (traverse_)
 import qualified Fixtures.Client as Fixtures
 import qualified Integration.CreateDepositAccount as CreateDepositAccount
-import qualified Integration.CreateIndividualApplication as CreateIndividualApplication
+import qualified Integration.IndividualApplication as IndividualApplication
 import qualified Integration.Payments as Payments
 import LoadEnv (loadEnv)
 import LoadEnv.Parse (parseEnvironment)
@@ -21,6 +21,6 @@ spec :: Spec
 spec =
   describe "Integration" do
     beforeAll (updateEnv >> Fixtures.makeAPI) do
-      CreateIndividualApplication.spec
+      IndividualApplication.spec
       CreateDepositAccount.spec
       Payments.spec

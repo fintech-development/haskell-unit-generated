@@ -22,7 +22,9 @@ library
       TheUnit.API
       TheUnit.API.Accounts.CreateDepositAccount
       TheUnit.API.ACHPayment.CreateACHPayment
-      TheUnit.API.Application.CreateIndividualApplication
+      TheUnit.API.Application
+      TheUnit.API.Application.Individual.CreateIndividualApplication
+      TheUnit.API.Application.Individual.GetIndividualApplication
       TheUnit.API.BookPayment.CreateBookPayment
       TheUnit.Model
       TheUnit.Model.Accounts
@@ -148,7 +150,7 @@ test-suite haskell-unit-generated-test
       Fixtures.VerifyJSON
       Integration
       Integration.CreateDepositAccount
-      Integration.CreateIndividualApplication
+      Integration.IndividualApplication
       Integration.Payments
       Paths_haskell_unit_generated
   hs-source-dirs:

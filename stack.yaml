@@ -8,6 +8,6 @@ packages:
 
 extra-deps:
   - git: https://github.com/fintech-development/haskell-client-generated.git
-    commit: 94bcd90f651175381221bd175b2d2007283bf261
+    commit: ba0e7017f6d9baadf1a4efc81884858f8341430f
   - aeson-deriving-0.1.1.2
 

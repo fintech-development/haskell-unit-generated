@@ -1,4 +1,4 @@
-module TheUnit.API.Application.CreateIndividualApplication
+module TheUnit.API.Application.Individual.CreateIndividualApplication
   ( createIndividualApplication,
   )
 where
@@ -10,7 +10,7 @@ import qualified Network.Integrated.HTTP.Core as Core
 import Network.Integrated.HTTP.MimeTypes (Consumes, MimeVndApiJSON, Produces)
 import TheUnit.Model.Application
   ( CreateIndividualApplicationRequest,
-    CreateIndividualApplicationResponse,
+    IndividualApplicationResponse,
   )
 import TheUnit.Model.Response (UnitEnvelope (..), UnitResponse)
 
@@ -31,7 +31,7 @@ instance HasBodyParam CreateApplicationRequest (UnitEnvelope CreateIndividualApp
 -- AuthMethod: 'Auth20BearerToken'
 createIndividualApplication ::
   CreateIndividualApplicationRequest ->
-  Core.Request CreateApplicationRequest MimeVndApiJSON (UnitResponse CreateIndividualApplicationResponse) MimeVndApiJSON
+  Core.Request CreateApplicationRequest MimeVndApiJSON (UnitResponse IndividualApplicationResponse) MimeVndApiJSON
 createIndividualApplication requestData =
   Core._mkRequest "POST" ["/applications"]
     `Core._hasAuthType` (P.Proxy :: P.Proxy Auth20BearerToken)

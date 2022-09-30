@@ -10,12 +10,12 @@ import TheUnit.Model
   ( ApplicationStatus (..),
     CreateDepositAccountData,
     CreateIndividualApplicationRequest,
-    CreateIndividualApplicationResponse (..),
     IndividualApplicationApproved (..),
     IndividualApplicationAwaitingDocuments (..),
     IndividualApplicationCanceled (..),
     IndividualApplicationDenied (..),
     IndividualApplicationPending (..),
+    IndividualApplicationResponse (..),
     UnitDepositAccount,
     UnitEnvelope (..),
     UnitResponse (..),
@@ -44,12 +44,12 @@ applicationRequest = do
 
 applicationResponse :: Spec
 applicationResponse = describe "CreateIndividualApplicationResponse" do
-  let approved' = CreateIndividualApplicationResponse'Approved IndividualApplicationApproved {applicationId = "593341", customer = CustomerId "512138"}
-  let awaitingDocuments = CreateIndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {applicationId = "53"}
-  let pending' = CreateIndividualApplicationResponse'Pending IndividualApplicationPending {applicationId = "595420"}
-  let pendingReview' = CreateIndividualApplicationResponse'PendingReview IndividualApplicationPending {applicationId = "595421"}
-  let canceled = CreateIndividualApplicationResponse'Canceled IndividualApplicationCanceled {applicationId = "1"}
-  let denied = CreateIndividualApplicationResponse'Denied IndividualApplicationDenied {applicationId = "2"}
+  let approved' = IndividualApplicationResponse'Approved IndividualApplicationApproved {applicationId = "593341", customer = CustomerId "512138"}
+  let awaitingDocuments = IndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {applicationId = "53"}
+  let pending' = IndividualApplicationResponse'Pending IndividualApplicationPending {applicationId = "595420"}
+  let pendingReview' = IndividualApplicationResponse'PendingReview IndividualApplicationPending {applicationId = "595421"}
+  let canceled = IndividualApplicationResponse'Canceled IndividualApplicationCanceled {applicationId = "1"}
+  let denied = IndividualApplicationResponse'Denied IndividualApplicationDenied {applicationId = "2"}
 
   let table =
         [ (Approved, File'ResponseApproved, approved'),
@@ -62,7 +62,7 @@ applicationResponse = describe "CreateIndividualApplicationResponse" do
   forM_ table \(status, goldenFile', expected) ->
     it ("Decode response: " <> show status) do
       rawJsonData <- goldenFile $ Fixtures.IndividualApplication goldenFile'
-      let res :: Either String (UnitResponse CreateIndividualApplicationResponse) = J.eitherDecode' rawJsonData
+      let res :: Either String (UnitResponse IndividualApplicationResponse) = J.eitherDecode' rawJsonData
       let resp = fromLeftError "JsonDecode" res
 
       case resp of
