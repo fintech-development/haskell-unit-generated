@@ -222,6 +222,22 @@ newtype IndividualApplicationCanceled = IndividualApplicationCanceled
   deriving (Show, Eq, Generic)
   deriving anyclass (OpenApi.ToSchema)
 
+-- * Helpers
+
+-- | IndividualApplicationResponse to ApplicationStatus
+applicationStatus :: IndividualApplicationResponse -> ApplicationStatus.ApplicationStatus
+applicationStatus = \case
+  IndividualApplicationResponse'Approved _ -> ApplicationStatus.Approved
+  IndividualApplicationResponse'Denied _ -> ApplicationStatus.Denied
+  IndividualApplicationResponse'Canceled _ -> ApplicationStatus.Canceled
+  IndividualApplicationResponse'AwaitingDocuments _ -> ApplicationStatus.AwaitingDocuments
+  IndividualApplicationResponse'PendingReview _ -> ApplicationStatus.PendingReview
+  IndividualApplicationResponse'Pending _ -> ApplicationStatus.Pending
+
+-- * Lenses
+
+-- | IndividualApplicationResponse ApplicationId
+-- All responses has applicationId
 _applicationId :: Lens.SimpleGetter IndividualApplicationResponse T.Text
 _applicationId f =
   Const . getConst . f . \case
@@ -231,3 +247,11 @@ _applicationId f =
     IndividualApplicationResponse'AwaitingDocuments IndividualApplicationAwaitingDocuments {applicationId} -> applicationId
     IndividualApplicationResponse'PendingReview IndividualApplicationPending {applicationId} -> applicationId
     IndividualApplicationResponse'Pending IndividualApplicationPending {applicationId} -> applicationId
+
+-- | IndividualApplicationResponse customerId
+-- Only Approved Application has customerId
+_customerId :: Lens.SimpleGetter IndividualApplicationResponse (Maybe CustomerId)
+_customerId f =
+  Const . getConst . f . \case
+    IndividualApplicationResponse'Approved IndividualApplicationApproved {customer} -> Just customer
+    _notApproved -> Nothing
