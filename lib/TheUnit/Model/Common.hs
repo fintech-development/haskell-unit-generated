@@ -56,7 +56,7 @@ data DeviceFingerprint = DeviceFingerprint
   deriving anyclass (J.FromJSON, J.ToJSON, OpenApi.ToSchema)
 
 -- | Special tags, support kev-value map, where key is always String and value is JSON primitive: number|string|boolean
-type Tags = Map.Map T.Text J.Value
+type Tags = Map.Map T.Text T.Text
 
 data UnitJSONObject = UnitJSONObject
   { typeName :: !T.Text,
