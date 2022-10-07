@@ -41,6 +41,7 @@ data UnitAPI = UnitAPI
     -- | create Book Payment
     createBookPayment :: Model.CreateBookPayment -> APIResponse Model.BookPayment,
     createBookPayment' :: Model.CreateBookPayment -> IO Model.BookPayment,
+    listAccountStatements' :: AccountId -> IO [Model.Statement],
     __cache :: Cache.Cache
   }
 
@@ -62,6 +63,8 @@ makeAPI = do
         Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createDepositAccount
   let createBookPayment =
         Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.createBookPayment
+  let listAccountStatements =
+        Dispatch.dispatchMime' (makeDispatchClient manager cfg) . API.listAccountStatements
 
   pure $
     UnitAPI
@@ -72,6 +75,7 @@ makeAPI = do
         createDepositAccount' = fmap handleResponse . createDepositAccount,
         createBookPayment,
         createBookPayment' = fmap handleResponse . createBookPayment,
+        listAccountStatements' = fmap handleResponse . listAccountStatements,
         __cache
       }
   where

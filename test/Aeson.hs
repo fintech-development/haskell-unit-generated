@@ -23,6 +23,7 @@ import TheUnit.Model
 import qualified TheUnit.Model as Webhooks
 import qualified TheUnit.Model.Payment as Payment
 import TheUnit.Model.Relationships
+import qualified TheUnit.Model.Statements as Statements
 import qualified TheUnit.Model.Webhooks as Webhook
 
 spec :: Spec
@@ -33,6 +34,7 @@ spec = do
       applicationResponse
     depositAccount
     payments
+    statements
     webhooks
 
 --
@@ -111,3 +113,11 @@ webhooks = do
     it "ReceivedPaymentCreated" do
       UnitEnvelope {payload = [webhook]} <- verifyJSON @(UnitEnvelope [Webhook.UnitWebhook]) (Webhooks File'ReceivedPaymentCreated)
       Webhooks.webhookEvent webhook `shouldBe` Webhooks.UnitEvent'ReceivedPaymentCreated
+
+statements :: Spec
+statements = do
+  describe "Statements" do
+    it "SingleStatementObject" do
+      verifyJSON_ @Statements.Statement (Statements File'SingleStatementObject)
+    it "ListStatements" do
+      verifyJSON_ @(UnitEnvelope [Statements.Statement]) (Statements File'ListStatements)

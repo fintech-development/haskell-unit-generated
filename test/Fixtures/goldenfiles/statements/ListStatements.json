@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "type": "statement",
+      "id": "1",
+      "attributes": {
+        "period": "2020-07"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "depositAccount",
+            "id": "1000"
+          }
+        },
+        "customer": {
+          "data": {
+            "type": "customer",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "statement",
+      "id": "2",
+      "attributes": {
+        "period": "2020-08"
+      },
+      "relationships": {
+        "account": {
+          "data": {
+            "type": "depositAccount",
+            "id": "1000"
+          }
+        },
+        "customer": {
+          "data": {
+            "type": "customer",
+            "id": "1"
+          }
+        }
+      }
+    }
+  ]
+}

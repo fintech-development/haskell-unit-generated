@@ -26,6 +26,7 @@ library
       TheUnit.API.Application.Individual.CreateIndividualApplication
       TheUnit.API.Application.Individual.GetIndividualApplication
       TheUnit.API.BookPayment.CreateBookPayment
+      TheUnit.API.Statements.ListStatements
       TheUnit.Model
       TheUnit.Model.Accounts
       TheUnit.Model.Accounts.DepositAccount
@@ -58,6 +59,7 @@ library
       TheUnit.Model.Relationships.RelationshipsObject
       TheUnit.Model.Relationships.TransactionId
       TheUnit.Model.Response
+      TheUnit.Model.Statements
       TheUnit.Model.Webhooks
       TheUnit.Model.Webhooks.Events
       TheUnit.Model.Webhooks.Verify

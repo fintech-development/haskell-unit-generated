@@ -4,6 +4,7 @@ module Fixtures.GoldenFile
     DepositAccountFiles (..),
     PaymentsFiles (..),
     WebhookFiles (..),
+    StatementsFiles (..),
     goldenFile,
     goldenIndividualApplicationRequest,
   )
@@ -23,12 +24,14 @@ data GoldenFile
   | DepositAccount DepositAccountFiles
   | Payments PaymentsFiles
   | Webhooks WebhookFiles
+  | Statements StatementsFiles
 
 instance Show GoldenFile where
   show (IndividualApplication file) = intercalate "/" ["individualApplication", show file]
   show (DepositAccount file) = intercalate "/" ["depositAccount", show file]
   show (Payments file) = intercalate "/" ["payment", show file]
   show (Webhooks file) = intercalate "/" ["webhooks", show file]
+  show (Statements file) = intercalate "/" ["statements", show file]
 
 data IndividualApplicationFiles
   = File'Request
@@ -81,6 +84,14 @@ instance Show WebhookFiles where
   show File'AccountCreated = "AccountCreated.json"
   show File'ApplicationAwaitingDocuments = "ApplicationAwaitingDocuments.json"
   show File'ReceivedPaymentCreated = "ReceivedPaymentCreated.json"
+
+data StatementsFiles
+  = File'SingleStatementObject
+  | File'ListStatements
+
+instance Show StatementsFiles where
+  show File'SingleStatementObject = "SingleStatementObject.json"
+  show File'ListStatements = "ListStatements.json"
 
 goldenFilePath :: T.Text
 goldenFilePath = T.intercalate "/" ["./test", "Fixtures", "goldenfiles"]
