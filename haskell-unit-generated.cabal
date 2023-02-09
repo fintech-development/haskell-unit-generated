@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.7.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -109,11 +109,11 @@ library
       PartialTypeSignatures
   ghc-options: -Wall -Wcompat -Werror=missing-fields -Werror=incomplete-record-updates -Werror=missing-methods -Werror=incomplete-patterns -Wincomplete-uni-patterns -Wpartial-fields -Widentities -Wredundant-constraints -funbox-strict-fields
   build-depends:
-      aeson >=1.0 && <2.0
+      aeson >=2.0
     , aeson-deriving
     , base >=4.7 && <5
     , base64-bytestring >1.0 && <2.0
-    , bytestring >=0.10.0 && <0.11
+    , bytestring >=0.11.0
     , case-insensitive
     , containers >=0.5.0.0 && <0.8
     , deepseq >=1.4 && <1.6
@@ -121,7 +121,7 @@ library
     , generic-lens
     , haskell-client-generated
     , http-api-data >=0.3.4 && <0.5
-    , http-client >=0.5 && <0.7
+    , http-client >=0.7
     , http-client-tls
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13
@@ -198,12 +198,12 @@ test-suite haskell-unit-generated-test
       PartialTypeSignatures
   ghc-options: -Wall -Wcompat -Werror=missing-fields -Werror=incomplete-record-updates -Werror=missing-methods -Werror=incomplete-patterns -Wincomplete-uni-patterns -Wpartial-fields -Widentities -Wredundant-constraints -funbox-strict-fields -threaded -rtsopts -with-rtsopts=-N -Wno-incomplete-uni-patterns
   build-depends:
-      aeson >=1.0 && <2.0
+      aeson >=2.0
     , aeson-deriving
     , aeson-qq
     , base >=4.7 && <5
     , base64-bytestring >1.0 && <2.0
-    , bytestring >=0.10.0 && <0.11
+    , bytestring >=0.11.0
     , case-insensitive
     , containers >=0.5.0.0 && <0.8
     , deepseq >=1.4 && <1.6
@@ -215,7 +215,7 @@ test-suite haskell-unit-generated-test
     , hspec-core
     , hspec-expectations-json
     , http-api-data >=0.3.4 && <0.5
-    , http-client >=0.5 && <0.7
+    , http-client >=0.7
     , http-client-tls
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13

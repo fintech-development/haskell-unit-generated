@@ -1,0 +1,12 @@
+packages:
+  .
+
+source-repository-package
+  type: git
+  location: https://github.com/fintech-development/haskell-client-generated.git
+  tag: 026aee92f1b6ad6fadbefdcff52d28e3867e382f
+
+source-repository-package
+  type: git
+  location: https://github.com/f-omega/aeson-deriving
+  tag: 373404389b13bac51550e0bdbbd5e15c662f8f66
