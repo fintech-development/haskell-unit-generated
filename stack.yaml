@@ -1,4 +1,4 @@
-resolver: lts-18.10
+resolver: lts-20.1
 build:
   haddock-arguments:
     haddock-args:
@@ -8,6 +8,8 @@ packages:
 
 extra-deps:
   - git: https://github.com/fintech-development/haskell-client-generated.git
-    commit: ba0e7017f6d9baadf1a4efc81884858f8341430f
-  - aeson-deriving-0.1.1.2
+    commit: 568863912fb0c41da8fc0cc221d8b2ea1570a162
+  - git: https://github.com/f-omega/aeson-deriving
+    commit: 373404389b13bac51550e0bdbbd5e15c662f8f66
+
 

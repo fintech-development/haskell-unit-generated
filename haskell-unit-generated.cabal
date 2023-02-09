@@ -121,7 +121,7 @@ library
     , generic-lens
     , haskell-client-generated
     , http-api-data >=0.3.4 && <0.5
-    , http-client >=0.5 && <0.7
+    , http-client >=0.7
     , http-client-tls
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13
@@ -215,7 +215,7 @@ test-suite haskell-unit-generated-test
     , hspec-core
     , hspec-expectations-json
     , http-api-data >=0.3.4 && <0.5
-    , http-client >=0.5 && <0.7
+    , http-client >=0.7
     , http-client-tls
     , http-media >=0.4 && <0.9
     , http-types >=0.8 && <0.13
